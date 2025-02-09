@@ -1,12 +1,28 @@
 import React from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Login, Register, Home, Admin } from './pages'
+import Auth from './routes/Auth'
 
 const App = () => {
   return (
-    <div>
-      <h1 className='bg-red-500 text-white m-2'>Hello</h1>
-      <div className='bg-green-500 size-20 rounded-full'></div>
-    </div>
+    <>
+      <Routes>
+        <Route path="*" element={<Navigate to='/home' />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Auth><Home /></Auth>} />
+        <Route path="/home" element={<Auth><Admin /></Auth>} />
+      </Routes>
+    </>
   )
 }
 
-export default App
+const AppWrapper = () => {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  )
+}
+
+export default AppWrapper
