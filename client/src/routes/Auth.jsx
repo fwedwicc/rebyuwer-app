@@ -6,14 +6,14 @@ const Auth = ({ children }) => {
   const userType = localStorage.getItem('userType')
   const location = useLocation()
 
+  // Redirect to login page if user is not logged in
   if (!token) {
     return <Navigate to="/login" />
   }
 
-  if (location.pathname === '/admin' && userType == 'admin') {
-    return <Navigate to="/admin" />
-  } else if (location.pathname === '/home' && userType == 'user') {
-    return <Navigate to="/home" />
+  // To not allow non-admin users to access the admin page
+  if (location.pathname === '/admin' && userType !== 'admin') {
+    return <Navigate to="/" />
   }
 
   return children
