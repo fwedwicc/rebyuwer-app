@@ -7,7 +7,6 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
-
   const token = localStorage.getItem('token')
   const userType = localStorage.getItem('userType')
 
@@ -33,7 +32,7 @@ const Login = () => {
         navigate('/')
       }
     } catch (err) {
-      setError('Invalid credentials')
+      setError(err.response.data.message || 'An error occurred')
     }
   }
 
@@ -49,7 +48,7 @@ const Login = () => {
 
   return (
     <div>
-      <h1>Login</h1>
+      <h1>Login Peyds</h1>
       {error && <p>{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
