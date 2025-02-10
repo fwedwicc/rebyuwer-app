@@ -13,10 +13,10 @@ const cardSetSchema = new Schema({
     required: true
   },
   // Card set
-  // cards: [{
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Card'
-  // }]
+  cards: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Card'
+  }]
 })
 
 const cardSet = model('cardSet', cardSetSchema)
