@@ -5,10 +5,20 @@ const Home = () => {
   const [user, setUser] = useState(null)
   const [cardSets, setCardSets] = useState([])
   const [cards, setCards] = useState({})
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [formData, setFormData] = useState({
+
+  // Card Sets Form
+  const [cardSetLoading, setCardSetLoading] = useState(false)
+  const [cardSetError, setCardSetError] = useState('')
+  const [cardSetFormData, setCardSetFormData] = useState({
     name: ''
+  })
+
+  // Card Form
+  const [cardLoading, setCardLoading] = useState(false)
+  const [cardError, setCardError] = useState('')
+  const [cardFormData, setCardFormData] = useState({
+    question: '',
+    answer: ''
   })
 
   // Handle the logout func
@@ -34,22 +44,22 @@ const Home = () => {
     return () => clearInterval(interval)
   }, [])
 
-  // HandleSubmit
-  const handleSubmit = async (e) => {
+  // Card Set Submit
+  const handleCardSetSubmit = async (e) => {
     e.preventDefault()
 
-    setLoading(true)
-    setError('')
+    setCardSetLoading(true)
+    setCardSetError('')
 
     try {
-      await api.post('/cardSet', formData)
-      setFormData({
+      await api.post('/cardSet', cardSetFormData)
+      setCardSetFormData({
         name: ''
       })
     } catch (err) {
-      setError(err.response.data.message)
+      setCardSetError(err.response.data.message)
     } finally {
-      setLoading(false)
+      setCardSetLoading(false)
     }
   }
 
@@ -68,6 +78,38 @@ const Home = () => {
     const interval = setInterval(fetchCardSets, 5000)
     return () => clearInterval(interval)
   }, [])
+
+
+  // Card Input
+  const handleCardInputChange = (e, cardSetId) => {
+    setCardFormData((prev) => ({
+      ...prev,
+      [cardSetId]: {
+        ...prev[cardSetId],
+        [e.target.name]: e.target.value
+      }
+    }))
+  }
+
+  // Card Submit
+  const handleCardSubmit = async (e, cardSetId) => {
+    e.preventDefault()
+
+    setCardLoading(true)
+    setCardError('')
+
+    try {
+      await api.post(`/card/${cardSetId}`, cardFormData[cardSetId])
+      setCardFormData((prev) => ({
+        ...prev,
+        [cardSetId]: { question: "", answer: "" } // Reset only that set
+      }))
+    } catch (err) {
+      setCardError(err.response.data.message)
+    } finally {
+      setCardLoading(false)
+    }
+  }
 
   // Fetch Cards for Each Card Set
   useEffect(() => {
@@ -99,19 +141,19 @@ const Home = () => {
       <button onClick={handleLogout}>Logout</button>
       {/* Greeting */}
       <h2>Hello {user?.username}</h2>
-      {/* Form */}
-      <form onSubmit={handleSubmit} className='border border-yellow-500 p-4'>
+      {/* Add Card Set Form */}
+      <form onSubmit={handleCardSetSubmit} className='border border-yellow-500 p-4'>
         <input
           type="text"
           placeholder="Name"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          value={cardSetFormData.name}
+          onChange={(e) => setCardSetFormData({ ...cardSetFormData, name: e.target.value })}
         />
         {/* Error Message */}
-        {error && <p>{error}</p>}
+        {cardSetError && <p>{cardSetError}</p>}
         {/* Submit Button */}
-        <button type="submit" disabled={loading} className='rounded-md px-3 py-1.5 border'>
-          {loading ? 'Submitting...' : 'Add card set'}
+        <button type="submit" disabled={cardSetLoading} className='rounded-md px-3 py-1.5 border'>
+          {cardSetLoading ? 'Submitting...' : 'Add card set'}
         </button>
       </form>
       {/* Card Sets */}
@@ -120,6 +162,29 @@ const Home = () => {
           cardSets.map((set) => (
             <li key={set._id}>
               <p>Name: {set.name}</p>
+              {/* Add Cards Form */}
+              <form onSubmit={(e) => handleCardSubmit(e, set._id)}>
+                <input
+                  type="text"
+                  name="question"
+                  placeholder="Question"
+                  value={cardFormData[set._id]?.question}
+                  onChange={(e) => handleCardInputChange(e, set._id)}
+                />
+                <input
+                  type="text"
+                  name="answer"
+                  placeholder="Answer"
+                  value={cardFormData[set._id]?.answer}
+                  onChange={(e) => handleCardInputChange(e, set._id)}
+                />
+                {/* Error Message */}
+                {cardError && <p>{cardError}</p>}
+                {/* Submit */}
+                <button type="submit" disabled={cardLoading}>
+                  {cardLoading ? "Submitting..." : "Add Card"}
+                </button>
+              </form>
               {/* Cards */}
               {Array.isArray(cards[set._id]) && cards[set._id].length > 0 ? (
                 <ul>
