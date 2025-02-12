@@ -9,8 +9,7 @@ export const getCardSets = async (req, res) => {
 
     res.status(200).json(userCardSets);
   } catch (error) {
-    console.error("Error fetching card sets:", error); // Log full error in terminal
-    res.status(500).json({ error: error.message || 'Server error' }); // Send actual error message in response
+    res.status(500).json({ message: error.message })
   }
 };
 
@@ -19,6 +18,11 @@ export const getCardSets = async (req, res) => {
 export const addCardSet = async (req, res) => {
   try {
     const { name } = req.body
+
+    if (!name) {
+      return res.status(400).json({ message: 'Name is required' })
+    }
+
     const newCardSet = new CardSet({
       name,
       user: req.user.id,
@@ -27,6 +31,6 @@ export const addCardSet = async (req, res) => {
     await newCardSet.save()
     res.status(201).json(newCardSet)
   } catch (error) {
-    res.status(500).json({ error: 'Server error' })
+    res.status(500).json({ message: error.message })
   }
 }
