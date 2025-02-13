@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 const Home = () => {
   const [user, setUser] = useState(null)
   const [cardSets, setCardSets] = useState([])
-  const [cards, setCards] = useState({})
 
   // Card Sets Form
   const [cardSetLoading, setCardSetLoading] = useState(false)
@@ -75,16 +74,17 @@ const Home = () => {
   return (
     <div>
       <h1>Home Peyds</h1>
-      <button onClick={handleLogout}>Logout</button>
+      <button onClick={handleLogout} className='rounded-md px-3 py-1.5 border'>Logout</button>
       {/* Greeting */}
       <h2>Hello {user?.username}</h2>
       {/* Add Card Set Form */}
-      <form onSubmit={handleCardSetSubmit} className='border border-yellow-500 p-4'>
+      <form onSubmit={handleCardSetSubmit} className='border p-4'>
         <input
           type="text"
           placeholder="Name"
           value={cardSetFormData.name}
           onChange={(e) => setCardSetFormData({ ...cardSetFormData, name: e.target.value })}
+          className='rounded-md px-3 py-1.5 border'
         />
         {/* Error Message */}
         {cardSetError && <p>{cardSetError}</p>}
@@ -94,10 +94,10 @@ const Home = () => {
         </button>
       </form>
       {/* Card Sets */}
-      <div className='border border-green-500 p-4'>
+      <div className='border p-4'>
         {Array.isArray(cardSets) && cardSets.length > 0 ? (
           cardSets.map((set) => (
-            <Link key={set._id} to={`/card-set/${set._id}`} className='block border border-blue-500 p-4'>
+            <Link key={set._id} to={`/card-set/${set._id}`} className='block border p-4'>
               <p>Name: {set.name}</p>
               <p>Card count: {set.cards.length}</p>
             </Link>

@@ -5,12 +5,30 @@ import api from '../utils/api'
 const Cards = () => {
   const { id } = useParams() // Get card set ID from URL
   const [cards, setCards] = useState([])
+  const [cardSetDetails, setCardSetDetails] = useState([])
   const [cardLoading, setCardLoading] = useState(false)
   const [cardError, setCardError] = useState('')
   const [cardFormData, setCardFormData] = useState({
     question: '',
     answer: ''
   })
+
+  // Fetch Card Set Details
+  useEffect(() => {
+    const fetchCardSetDetails = async () => {
+      try {
+        const response = await api.get(`/cardSet`)
+        const currentCardSet = response.data.find(set => set._id === id) // Find by ID
+        setCardSetDetails(currentCardSet)
+      } catch (error) {
+        console.log('Error fetching cards:', error)
+      }
+    }
+
+    fetchCardSetDetails()
+    const interval = setInterval(fetchCardSetDetails, 5000)
+    return () => clearInterval(interval)
+  }, [id])
 
   // Fetch Cards for the Given Card Set
   useEffect(() => {
@@ -56,7 +74,7 @@ const Cards = () => {
 
   return (
     <div>
-      <h1>Card Set</h1>
+      <p>Name: {cardSetDetails.name}</p>
       {/* Add Cards Form */}
       <form onSubmit={handleCardSubmit}>
         <input
@@ -65,6 +83,7 @@ const Cards = () => {
           placeholder="Question"
           value={cardFormData.question}
           onChange={handleCardInputChange}
+          className='rounded-md px-3 py-1.5 border'
         />
         <input
           type="text"
@@ -72,11 +91,12 @@ const Cards = () => {
           placeholder="Answer"
           value={cardFormData.answer}
           onChange={handleCardInputChange}
+          className='rounded-md px-3 py-1.5 border'
         />
         {/* Error Message */}
         {cardError && <p>{cardError}</p>}
         {/* Submit */}
-        <button type="submit" disabled={cardLoading}>
+        <button type="submit" disabled={cardLoading} className='rounded-md px-3 py-1.5 border'>
           {cardLoading ? 'Submitting...' : 'Add Card'}
         </button>
       </form>
@@ -84,9 +104,9 @@ const Cards = () => {
       {Array.isArray(cards) && cards.length > 0 ? (
         <ul>
           {cards.map((card) => (
-            <li key={card._id}>
-              <p>{card.question}</p>
-              <p>{card.answer}</p>
+            <li key={card._id} className='border p-2'>
+              <p>Front: {card.question}</p>
+              <p>Back: {card.answer}</p>
             </li>
           ))}
         </ul>

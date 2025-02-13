@@ -56,14 +56,16 @@ const Login = () => {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className='rounded-md px-3 py-1.5 border'
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className='rounded-md px-3 py-1.5 border'
         />
-        <button type="submit">Login</button>
+        <button type="submit" className='rounded-md px-3 py-1.5 border'>Login</button>
       </form>
     </div>
   )
