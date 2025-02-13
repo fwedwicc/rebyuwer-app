@@ -15,8 +15,10 @@ const Home = () => {
 
   // Handle the logout func
   const handleLogout = () => {
+    if (!window.confirm("Are you sure you want to logout?")) {
+      return
+    }
     localStorage.removeItem('token')
-    alert('Logged out successfully')
     window.location.href = '/login'
   }
 
@@ -71,6 +73,19 @@ const Home = () => {
     return () => clearInterval(interval)
   }, [])
 
+  // Delete Card Set
+  const handleDeleteCardSet = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this card set?")) {
+      return
+    }
+    try {
+      const response = await api.delete(`/cardSet/${id}`)
+      setCardSets(cardSets.filter((set) => set._id !== id))
+    } catch (error) {
+      console.log('Error fetching cards:', error)
+    }
+  }
+
   return (
     <div>
       <h1>Home Peyds</h1>
@@ -97,10 +112,12 @@ const Home = () => {
       <div className='border p-4'>
         {Array.isArray(cardSets) && cardSets.length > 0 ? (
           cardSets.map((set) => (
-            <Link key={set._id} to={`/card-set/${set._id}`} className='block border p-4'>
+            <div key={set._id} className='block border p-4'>
               <p>Name: {set.name}</p>
               <p>Card count: {set.cards.length}</p>
-            </Link>
+              <Link to={`/card-set/${set._id}`} className='rounded-md px-3 py-1.5 border'>View</Link>
+              <button onClick={() => handleDeleteCardSet(set._id)} className='rounded-md px-3 py-1.5 border'>Delete</button>
+            </div>
           ))
         ) : (
           <li>No card set available</li>
