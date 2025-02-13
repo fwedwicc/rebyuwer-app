@@ -79,7 +79,7 @@ const Home = () => {
       return
     }
     try {
-      const response = await api.delete(`/cardSet/${id}`)
+      await api.delete(`/cardSet/${id}`)
       setCardSets(cardSets.filter((set) => set._id !== id))
     } catch (error) {
       console.log('Error fetching cards:', error)

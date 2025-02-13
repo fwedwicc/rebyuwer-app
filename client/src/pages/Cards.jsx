@@ -72,6 +72,17 @@ const Cards = () => {
     }
   }
 
+  // Delete Card
+  const handleDeleteCard = async (cardId) => {
+    try {
+      await api.delete(`/card/${id}/${cardId}`)
+
+      setCards((prevCards) => prevCards.filter((card) => card._id !== cardId))
+    } catch (error) {
+      console.error('Error deleting card:', error)
+    }
+  }
+
   return (
     <div>
       <p>Name: {cardSetDetails.name}</p>
@@ -107,6 +118,9 @@ const Cards = () => {
             <li key={card._id} className='border p-2'>
               <p>Front: {card.question}</p>
               <p>Back: {card.answer}</p>
+              <button
+                onClick={() => handleDeleteCard(card._id)}
+                className='rounded-md px-3 py-1.5 border'>Delete Card</button>
             </li>
           ))}
         </ul>
