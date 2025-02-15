@@ -50,6 +50,37 @@ export const addCards = async (req, res) => {
   }
 }
 
+// Edit Card
+export const editCard = async (req, res) => {
+  try {
+    const { cardSetId, cardId } = req.params
+    const { question, answer } = req.body
+
+    if (!question || !answer) {
+      return res.status(400).json({ success: false, message: "Question and answer are required" })
+    }
+
+    // Ensure the set belongs to the user
+    const cardSet = await CardSet.findOne({ _id: cardSetId, user: req.user.id })
+    if (!cardSet) return res.status(403).json({ error: 'Unauthorized' })
+
+    // Find and update the card
+    const updatedCard = await Card.findByIdAndUpdate(
+      cardId,
+      { question, answer },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedCard) {
+      return res.status(404).json({ message: 'Card not found' });
+    }
+
+    res.status(200).json({ success: true, message: 'Card updated successfully', card: updatedCard });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Error in editing Card" })
+  }
+}
+
 // Delete Card
 export const deleteCard = async (req, res) => {
   try {
