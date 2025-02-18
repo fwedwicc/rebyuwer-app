@@ -88,7 +88,13 @@ const Cards = () => {
   }
 
   return (
-    <div className='w-full max-w-md'>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className='w-full max-w-md'
+    >
       {/* Card Set Detail */}
       <p>Name: {cardSetDetails.name}</p>
 
@@ -125,41 +131,44 @@ const Cards = () => {
       )}
 
       {/* New Card Input Fields */}
-      {newCard && (
-        <motion.div
-          className='border p-2 space-x-2'
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: 0.4,
-            scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
-          }}
-        >
-          <input
-            type="text"
-            name="question"
-            placeholder="Question"
-            value={newCard.question}
-            onChange={handleNewCardChange}
-            className='rounded-md px-3 py-1.5 border'
-          />
-          <input
-            type="text"
-            name="answer"
-            placeholder="Answer"
-            value={newCard.answer}
-            onChange={handleNewCardChange}
-            className='rounded-md px-3 py-1.5 border'
-          />
-          <button
-            onClick={handleCardSubmit}
-            className='rounded-md px-3 py-1.5 border'
-            disabled={cardLoading}
+      <AnimatePresence initial={false}>
+        {newCard && (
+          <motion.div
+            className='border p-2 space-x-2'
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.4,
+              scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
+            }}
+            layout
           >
-            {cardLoading ? 'Saving...' : 'Save Card'}
-          </button>
-        </motion.div>
-      )}
+            <input
+              type="text"
+              name="question"
+              placeholder="Question"
+              value={newCard.question}
+              onChange={handleNewCardChange}
+              className='rounded-md px-3 py-1.5 border'
+            />
+            <input
+              type="text"
+              name="answer"
+              placeholder="Answer"
+              value={newCard.answer}
+              onChange={handleNewCardChange}
+              className='rounded-md px-3 py-1.5 border'
+            />
+            <button
+              onClick={handleCardSubmit}
+              className='rounded-md px-3 py-1.5 border'
+              disabled={cardLoading}
+            >
+              {cardLoading ? 'Saving...' : 'Save Card'}
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Error Message */}
       {cardError && <p className="text-red-500">{cardError}</p>}
@@ -168,6 +177,7 @@ const Cards = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         transition={{
           opacity: { delay: 0.5, duration: 0.4 },
         }}
@@ -180,7 +190,7 @@ const Cards = () => {
           Add Card
         </button>
       </motion.div>
-    </div>
+    </motion.div>
   )
 }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import * as motion from "motion/react-client"
 import api from '../utils/api'
 import { Link } from 'react-router-dom'
 
@@ -87,7 +88,13 @@ const Home = () => {
   }
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      className='w-full max-w-md'
+    >
       <h1>Home Peyds</h1>
       <button onClick={handleLogout} className='rounded-md px-3 py-1.5 border'>Logout</button>
       {/* Greeting */}
@@ -123,7 +130,7 @@ const Home = () => {
           <li>No card set available</li>
         )}
       </div>
-    </div>
+    </motion.div>
   )
 }
 
