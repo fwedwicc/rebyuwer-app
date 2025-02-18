@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import * as motion from "motion/react-client"
 import { useNavigate, Navigate } from 'react-router-dom'
 import API from '../utils/api'
+import { Button } from '../components/ui'
 
 const Login = () => {
   const [username, setUsername] = useState('')
@@ -47,26 +49,37 @@ const Login = () => {
   }, [])
 
   return (
-    <div>
-      <h1>Login Peyds</h1>
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className='rounded-md px-3 py-1.5 border'
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className='rounded-md px-3 py-1.5 border'
-        />
-        <button type="submit" className='rounded-md px-3 py-1.5 border'>Login</button>
-      </form>
+    <div className='md:min-h-screen flex items-center justify-center'>
+      <motion.div
+        className='bg-white shadow-lg border border-neutral-200/80 shadow-neutral-100 rounded-4xl p-12 w-full max-w-sm'
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 0.4,
+          scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+        }}
+      >
+        <h1>Login Peyds</h1>
+        {error && <p>{error}</p>}
+        <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className='rounded-md px-3 py-1.5 border'
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className='rounded-md px-3 py-1.5 border'
+          />
+          <Button type='submit' className='mt-4'>Login</Button>
+        </form>
+      </motion.div>
+
     </div>
   )
 }

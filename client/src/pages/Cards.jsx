@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+import * as motion from "motion/react-client"
+import { AnimatePresence } from "motion/react"
 import { useParams } from 'react-router-dom'
 import api from '../utils/api'
 
@@ -86,30 +88,53 @@ const Cards = () => {
   }
 
   return (
-    <div>
+    <div className='w-full max-w-md'>
       {/* Card Set Detail */}
       <p>Name: {cardSetDetails.name}</p>
 
       {/* Cards List */}
       {Array.isArray(cards) && cards.length > 0 ? (
-        <ul>
+        <AnimatePresence initial={false}>
           {cards.map((card) => (
-            <li key={card._id} className='border p-2'>
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{
+                opacity: 0,
+                scale: 0,
+                transition: { duration: 0.3 },
+              }}
+              transition={{
+                duration: 0.4,
+                scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
+              }}
+              layout
+              key={card._id}
+              className='border p-2'
+            >
               <p>Front: {card.question}</p>
               <p>Back: {card.answer}</p>
               <button
                 onClick={() => handleDeleteCard(card._id)}
                 className='rounded-md px-3 py-1.5 border'>Delete Card</button>
-            </li>
+            </motion.div>
           ))}
-        </ul>
+        </AnimatePresence>
       ) : (
         <p>No cards available</p>
       )}
 
       {/* New Card Input Fields */}
       {newCard && (
-        <li className='border p-2 space-x-2'>
+        <motion.div
+          className='border p-2 space-x-2'
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.4,
+            scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
+          }}
+        >
           <input
             type="text"
             name="question"
@@ -133,16 +158,28 @@ const Cards = () => {
           >
             {cardLoading ? 'Saving...' : 'Save Card'}
           </button>
-        </li>
+        </motion.div>
       )}
 
       {/* Error Message */}
       {cardError && <p className="text-red-500">{cardError}</p>}
 
       {/* Add Card Button */}
-      <button onClick={handleAddNewCard} className='rounded-md px-3 py-1.5 border mb-3' >
-        Add Card
-      </button>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{
+          opacity: { delay: 0.5, duration: 0.4 },
+        }}
+        layout
+      >
+        <button
+          onClick={handleAddNewCard}
+          className="rounded-md px-3 py-1.5 border mb-3"
+        >
+          Add Card
+        </button>
+      </motion.div>
     </div>
   )
 }
