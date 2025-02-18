@@ -8,10 +8,7 @@ const Cards = () => {
   const [cardSetDetails, setCardSetDetails] = useState([])
   const [cardLoading, setCardLoading] = useState(false)
   const [cardError, setCardError] = useState('')
-  const [cardFormData, setCardFormData] = useState({
-    question: '',
-    answer: ''
-  })
+  const [newCard, setNewCard] = useState(null) // Store the new empty card
 
   // Fetch Card Set Details
   useEffect(() => {
@@ -44,12 +41,17 @@ const Cards = () => {
     fetchCards()
   }, [id])
 
-  // Handle Input Change
-  const handleCardInputChange = (e) => {
-    setCardFormData({
-      ...cardFormData,
+  // Handle Input Change for New Card
+  const handleNewCardChange = (e) => {
+    setNewCard({
+      ...newCard,
       [e.target.name]: e.target.value
     })
+  }
+
+  // Add an empty card when clicking "Add Card"
+  const handleAddNewCard = () => {
+    setNewCard({ question: '', answer: '' })
   }
 
   // Handle Card Submission
@@ -59,8 +61,8 @@ const Cards = () => {
     setCardError('')
 
     try {
-      await api.post(`/card/${id}`, cardFormData)
-      setCardFormData({ question: '', answer: '' }) // Reset form
+      await api.post(`/card/${id}`, newCard)
+      setNewCard(null) // Reset form
 
       // Fetch updated cards after submission
       const response = await api.get(`/card/${id}`)
@@ -85,32 +87,9 @@ const Cards = () => {
 
   return (
     <div>
+      {/* Card Set Detail */}
       <p>Name: {cardSetDetails.name}</p>
-      {/* Add Cards Form */}
-      <form onSubmit={handleCardSubmit}>
-        <input
-          type="text"
-          name="question"
-          placeholder="Question"
-          value={cardFormData.question}
-          onChange={handleCardInputChange}
-          className='rounded-md px-3 py-1.5 border'
-        />
-        <input
-          type="text"
-          name="answer"
-          placeholder="Answer"
-          value={cardFormData.answer}
-          onChange={handleCardInputChange}
-          className='rounded-md px-3 py-1.5 border'
-        />
-        {/* Error Message */}
-        {cardError && <p>{cardError}</p>}
-        {/* Submit */}
-        <button type="submit" disabled={cardLoading} className='rounded-md px-3 py-1.5 border'>
-          {cardLoading ? 'Submitting...' : 'Add Card'}
-        </button>
-      </form>
+
       {/* Cards List */}
       {Array.isArray(cards) && cards.length > 0 ? (
         <ul>
@@ -127,6 +106,43 @@ const Cards = () => {
       ) : (
         <p>No cards available</p>
       )}
+
+      {/* New Card Input Fields */}
+      {newCard && (
+        <li className='border p-2 space-x-2'>
+          <input
+            type="text"
+            name="question"
+            placeholder="Question"
+            value={newCard.question}
+            onChange={handleNewCardChange}
+            className='rounded-md px-3 py-1.5 border'
+          />
+          <input
+            type="text"
+            name="answer"
+            placeholder="Answer"
+            value={newCard.answer}
+            onChange={handleNewCardChange}
+            className='rounded-md px-3 py-1.5 border'
+          />
+          <button
+            onClick={handleCardSubmit}
+            className='rounded-md px-3 py-1.5 border'
+            disabled={cardLoading}
+          >
+            {cardLoading ? 'Saving...' : 'Save Card'}
+          </button>
+        </li>
+      )}
+
+      {/* Error Message */}
+      {cardError && <p className="text-red-500">{cardError}</p>}
+
+      {/* Add Card Button */}
+      <button onClick={handleAddNewCard} className='rounded-md px-3 py-1.5 border mb-3' >
+        Add Card
+      </button>
     </div>
   )
 }
