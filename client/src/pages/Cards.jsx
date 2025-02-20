@@ -13,6 +13,16 @@ const Cards = () => {
   const [newCard, setNewCard] = useState(null) // Store the new empty card
   const bottomRef = useRef(null)
   const [isAddingCard, setIsAddingCard] = useState(false) // Track if a card is being added
+  const [loading, setLoading] = useState(true)
+
+  // Loader
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   // Fetch Card Set Details
   useEffect(() => {
@@ -116,116 +126,123 @@ const Cards = () => {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-      className='w-full max-w-md'
-    >
-      <Toaster position="top-right" />
-      {/* Card Set Detail */}
-      <p>Name: {cardSetDetails.name}</p>
-
-      {/* Cards List */}
-      {Array.isArray(cards) && cards.length > 0 ? (
-        <AnimatePresence initial={false}>
-          {cards.map((card) => (
-            <motion.div
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{
-                opacity: 0,
-                scale: 0,
-                transition: { duration: 0.2 },
-              }}
-              transition={{
-                duration: 0.2,
-                scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
-              }}
-              layout
-              key={card._id}
-              className='border p-2'
-            >
-              <p>Front: {card.question}</p>
-              <p>Back: {card.answer}</p>
-              <button
-                onClick={() => handleDeleteCard(card._id)}
-                className='rounded-md px-3 py-1.5 border'>Delete Card</button>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      ) : (
-        <p>No cards available</p>
-      )}
-
-
-      {/* Add Card Button */}
-      <button
-        onClick={handleAddNewCard}
-        className="rounded-md px-3 py-1.5 border mb-3"
-      >
-        Add Card
-      </button>
-
-
-      {/* New Card Input Fields */}
-      <AnimatePresence initial={false}>
-        {newCard && (
+    <>
+      {loading ?
+        <>
+          Launching {cardSetDetails.name}
+        </>
+        : (
           <motion.div
-            className='border p-2 space-x-2'
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{
-              opacity: 0,
-              scale: 0,
-              transition: { duration: 0.3 },
-            }}
-            transition={{
-              duration: 0.4,
-              scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
-            }}
-            layout
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className='w-full max-w-lg'
           >
-            <input
-              type="text"
-              name="question"
-              placeholder="Question"
-              value={newCard.question}
-              onChange={handleNewCardChange}
-              className='rounded-md px-3 py-1.5 border'
-            />
-            <input
-              type="text"
-              name="answer"
-              placeholder="Answer"
-              value={newCard.answer}
-              onChange={handleNewCardChange}
-              className='rounded-md px-3 py-1.5 border'
-            />
+            <Toaster position="top-right" />
+            {/* Card Set Detail */}
+            <p>Name: {cardSetDetails.name}</p>
 
+            {/* Cards List */}
+            {Array.isArray(cards) && cards.length > 0 ? (
+              <AnimatePresence initial={false}>
+                {cards.map((card) => (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{
+                      opacity: 0,
+                      scale: 0,
+                      transition: { duration: 0.2 },
+                    }}
+                    transition={{
+                      duration: 0.2,
+                      scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
+                    }}
+                    layout
+                    key={card._id}
+                    className='border p-2'
+                  >
+                    <p>Front: {card.question}</p>
+                    <p>Back: {card.answer}</p>
+                    <button
+                      onClick={() => handleDeleteCard(card._id)}
+                      className='rounded-md px-3 py-1.5 border'>Delete Card</button>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            ) : (
+              <p>No cards available</p>
+            )}
+
+
+            {/* Add Card Button */}
             <button
-              onClick={handleCardSubmit}
-              className='rounded-md px-3 py-1.5 border'
-              disabled={cardLoading}
+              onClick={handleAddNewCard}
+              className="rounded-md px-3 py-1.5 border mb-3"
             >
-              {cardLoading ? 'Saving...' : 'Save Card'}
+              Add Card
             </button>
-            <button
-              onClick={() => setNewCard(null)}
-              className='rounded-md px-3 py-1.5 border'
-            >
-              Cancel
-            </button>
-          </motion.div>
-        )}
-        {/* Error Message */}
-        {/* {cardError && <p className="text-red-500">{cardError}</p>} */}
-      </AnimatePresence>
 
-      <div ref={bottomRef} />
 
-    </motion.div>
+            {/* New Card Input Fields */}
+            <AnimatePresence initial={false}>
+              {newCard && (
+                <motion.div
+                  className='border p-2  flex flex-col w-full'
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0,
+                    transition: { duration: 0.3 },
+                  }}
+                  transition={{
+                    duration: 0.4,
+                    scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
+                  }}
+                  layout
+                >
+                  <input
+                    type="text"
+                    name="question"
+                    placeholder="Question"
+                    value={newCard.question}
+                    onChange={handleNewCardChange}
+                    className='rounded-md px-3 py-1.5 border'
+                  />
+                  <input
+                    type="text"
+                    name="answer"
+                    placeholder="Answer"
+                    value={newCard.answer}
+                    onChange={handleNewCardChange}
+                    className='rounded-md px-3 py-1.5 border'
+                  />
+
+                  <button
+                    onClick={handleCardSubmit}
+                    className='rounded-md px-3 py-1.5 border'
+                    disabled={cardLoading}
+                  >
+                    {cardLoading ? 'Saving...' : 'Save Card'}
+                  </button>
+                  <button
+                    onClick={() => setNewCard(null)}
+                    className='rounded-md px-3 py-1.5 border'
+                  >
+                    Cancel
+                  </button>
+                </motion.div>
+              )}
+              {/* Error Message */}
+              {/* {cardError && <p className="text-red-500">{cardError}</p>} */}
+            </AnimatePresence>
+
+            <div ref={bottomRef} />
+
+          </motion.div>)}
+    </>
   )
 }
 

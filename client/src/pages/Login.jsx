@@ -3,11 +3,12 @@ import * as motion from "motion/react-client"
 import { useNavigate, Navigate } from 'react-router-dom'
 import toast, { Toaster } from 'react-hot-toast'
 import API from '../utils/api'
-import { Button } from '../components/ui'
+import { InputText, Button } from '../components/ui'
 
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [loginLoading, setLoginLoading] = useState(false)
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const userType = localStorage.getItem('userType')
@@ -22,6 +23,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoginLoading(true)
 
     try {
       const response = await API.post('/auth/login', { username, password })
@@ -48,6 +50,8 @@ const Login = () => {
           secondary: '#fff',
         },
       })
+    } finally {
+      setLoginLoading(false)
     }
   }
 
@@ -69,27 +73,26 @@ const Login = () => {
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{
-          duration: 0.4,
-          scale: { type: "spring", visualDuration: 0.4, bounce: 0.4 },
+          duration: 0.3,
+          scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
         }}
       >
         <h1>Login Peyds</h1>
-        <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
-          <input
+        <span>Maglogin ka na bhie.</span>
+        <form onSubmit={handleSubmit} className='flex flex-col gap-6 mt-9'>
+          <InputText
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className='rounded-md px-3 py-1.5 border'
           />
-          <input
+          <InputText
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className='rounded-md px-3 py-1.5 border'
           />
-          <Button type='submit' className='mt-4'>Login</Button>
+          <Button type='submit' disabled={loginLoading} className='mt-4'>{loginLoading ? 'Logging in' : 'Login'}</Button>
         </form>
       </motion.div>
 
