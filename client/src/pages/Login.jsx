@@ -56,7 +56,7 @@ const Login = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{
           duration: 0.4,
-          scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+          scale: { type: "spring", visualDuration: 0.4, bounce: 0.4 },
         }}
       >
         <h1>Login Peyds</h1>

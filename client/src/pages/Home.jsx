@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import * as motion from "motion/react-client"
+import { AnimatePresence } from "motion/react"
 import api from '../utils/api'
 import { Link } from 'react-router-dom'
 
@@ -117,18 +118,35 @@ const Home = () => {
       </form>
       {/* Card Sets */}
       <div className='border p-4'>
-        {Array.isArray(cardSets) && cardSets.length > 0 ? (
-          cardSets.map((set) => (
-            <div key={set._id} className='block border p-4'>
-              <p>Name: {set.name}</p>
-              <p>Card count: {set.cards.length}</p>
-              <Link to={`/card-set/${set._id}`} className='rounded-md px-3 py-1.5 border'>View</Link>
-              <button onClick={() => handleDeleteCardSet(set._id)} className='rounded-md px-3 py-1.5 border'>Delete</button>
-            </div>
-          ))
-        ) : (
-          <li>No card set available</li>
-        )}
+        <AnimatePresence initial={false}>
+          {Array.isArray(cardSets) && cardSets.length > 0 ? (
+            cardSets.map((set) => (
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{
+                  opacity: 0,
+                  scale: 0,
+                  transition: { duration: 0.3 },
+                }}
+                transition={{
+                  duration: 0.4,
+                  scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
+                }}
+                layout
+                key={set._id}
+                className='block border p-4'
+              >
+                <p>Name: {set.name}</p>
+                <p>Card count: {set.cards.length}</p>
+                <Link to={`/card-set/${set._id}`} className='rounded-md px-3 py-1.5 border'>View</Link>
+                <button onClick={() => handleDeleteCardSet(set._id)} className='rounded-md px-3 py-1.5 border'>Delete</button>
+              </motion.div>
+            ))
+          ) : (
+            <li>No card set available</li>
+          )}
+        </AnimatePresence>
       </div>
     </motion.div>
   )

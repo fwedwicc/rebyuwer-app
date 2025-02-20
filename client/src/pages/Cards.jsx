@@ -137,6 +137,11 @@ const Cards = () => {
             className='border p-2 space-x-2'
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
+            exit={{
+              opacity: 0,
+              scale: 0,
+              transition: { duration: 0.3 },
+            }}
             transition={{
               duration: 0.4,
               scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
@@ -159,6 +164,7 @@ const Cards = () => {
               onChange={handleNewCardChange}
               className='rounded-md px-3 py-1.5 border'
             />
+
             <button
               onClick={handleCardSubmit}
               className='rounded-md px-3 py-1.5 border'
@@ -166,30 +172,25 @@ const Cards = () => {
             >
               {cardLoading ? 'Saving...' : 'Save Card'}
             </button>
+            <button
+              onClick={() => setNewCard(null)}
+              className='rounded-md px-3 py-1.5 border'
+            >
+              Cancel
+            </button>
           </motion.div>
         )}
+        {/* Error Message */}
+        {cardError && <p className="text-red-500">{cardError}</p>}
       </AnimatePresence>
 
-      {/* Error Message */}
-      {cardError && <p className="text-red-500">{cardError}</p>}
-
       {/* Add Card Button */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{
-          opacity: { delay: 0.5, duration: 0.4 },
-        }}
-        layout
+      <button
+        onClick={handleAddNewCard}
+        className="rounded-md px-3 py-1.5 border mb-3"
       >
-        <button
-          onClick={handleAddNewCard}
-          className="rounded-md px-3 py-1.5 border mb-3"
-        >
-          Add Card
-        </button>
-      </motion.div>
+        Add Card
+      </button>
     </motion.div>
   )
 }
