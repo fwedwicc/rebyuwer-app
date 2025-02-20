@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
 import { useParams } from 'react-router-dom'
@@ -11,6 +11,8 @@ const Cards = () => {
   const [cardLoading, setCardLoading] = useState(false)
   const [cardError, setCardError] = useState('')
   const [newCard, setNewCard] = useState(null) // Store the new empty card
+  const bottomRef = useRef(null)
+  const [isAddingCard, setIsAddingCard] = useState(false) // Track if a card is being added
 
   // Fetch Card Set Details
   useEffect(() => {
@@ -43,6 +45,16 @@ const Cards = () => {
     fetchCards()
   }, [id])
 
+  // Scroll to bottom when new card is added
+  useEffect(() => {
+    if (isAddingCard) {
+      setTimeout(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+      }, 100)
+      setIsAddingCard(false) // Reset after scrolling
+    }
+  }, [cards])
+
   // Handle Input Change for New Card
   const handleNewCardChange = (e) => {
     setNewCard({
@@ -54,6 +66,10 @@ const Cards = () => {
   // Add an empty card when clicking "Add Card"
   const handleAddNewCard = () => {
     setNewCard({ question: '', answer: '' })
+    setTimeout(() => {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+    }, 100)
+    setIsAddingCard(true)
   }
 
   // Handle Card Submission
@@ -108,10 +124,10 @@ const Cards = () => {
               exit={{
                 opacity: 0,
                 scale: 0,
-                transition: { duration: 0.3 },
+                transition: { duration: 0.2 },
               }}
               transition={{
-                duration: 0.4,
+                duration: 0.2,
                 scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
               }}
               layout
@@ -129,6 +145,16 @@ const Cards = () => {
       ) : (
         <p>No cards available</p>
       )}
+
+
+      {/* Add Card Button */}
+      <button
+        onClick={handleAddNewCard}
+        className="rounded-md px-3 py-1.5 border mb-3"
+      >
+        Add Card
+      </button>
+
 
       {/* New Card Input Fields */}
       <AnimatePresence initial={false}>
@@ -184,13 +210,8 @@ const Cards = () => {
         {cardError && <p className="text-red-500">{cardError}</p>}
       </AnimatePresence>
 
-      {/* Add Card Button */}
-      <button
-        onClick={handleAddNewCard}
-        className="rounded-md px-3 py-1.5 border mb-3"
-      >
-        Add Card
-      </button>
+      <div ref={bottomRef} />
+
     </motion.div>
   )
 }

@@ -52,6 +52,9 @@ const Home = () => {
       setCardSetFormData({
         name: ''
       })
+      // Fetch updated card Set after submission
+      const response = await api.get('/cardSet')
+      setCardSets(response.data)
     } catch (err) {
       setCardSetError(err.response.data.message)
     } finally {
@@ -127,10 +130,10 @@ const Home = () => {
                 exit={{
                   opacity: 0,
                   scale: 0,
-                  transition: { duration: 0.3 },
+                  transition: { duration: 0.2 },
                 }}
                 transition={{
-                  duration: 0.4,
+                  duration: 0.2,
                   scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
                 }}
                 layout
