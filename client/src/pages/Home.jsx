@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
+import toast, { Toaster } from 'react-hot-toast'
 import api from '../utils/api'
 import { Link } from 'react-router-dom'
 
@@ -45,7 +46,6 @@ const Home = () => {
     e.preventDefault()
 
     setCardSetLoading(true)
-    setCardSetError('')
 
     try {
       await api.post('/cardSet', cardSetFormData)
@@ -56,7 +56,20 @@ const Home = () => {
       const response = await api.get('/cardSet')
       setCardSets(response.data)
     } catch (err) {
-      setCardSetError(err.response.data.message)
+      toast.error(err.response.data.message, {
+        style: {
+          border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
+          boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
+          borderRadius: "2rem",
+          padding: '10px',
+          paddingY: '20px',
+          color: '#ef4444',
+        },
+        iconTheme: {
+          primary: '#ef4444',
+          secondary: '#fff',
+        },
+      })
     } finally {
       setCardSetLoading(false)
     }
@@ -99,6 +112,7 @@ const Home = () => {
       transition={{ duration: 0.5 }}
       className='w-full max-w-md'
     >
+      <Toaster position="top-right" />
       <h1>Home Peyds</h1>
       <button onClick={handleLogout} className='rounded-md px-3 py-1.5 border'>Logout</button>
       {/* Greeting */}
@@ -112,8 +126,6 @@ const Home = () => {
           onChange={(e) => setCardSetFormData({ ...cardSetFormData, name: e.target.value })}
           className='rounded-md px-3 py-1.5 border'
         />
-        {/* Error Message */}
-        {cardSetError && <p>{cardSetError}</p>}
         {/* Submit Button */}
         <button type="submit" disabled={cardSetLoading} className='rounded-md px-3 py-1.5 border'>
           {cardSetLoading ? 'Submitting...' : 'Add card set'}

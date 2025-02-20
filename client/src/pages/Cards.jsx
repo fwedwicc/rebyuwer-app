@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
+import toast, { Toaster } from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
 import api from '../utils/api'
 
@@ -9,7 +10,6 @@ const Cards = () => {
   const [cards, setCards] = useState([])
   const [cardSetDetails, setCardSetDetails] = useState([])
   const [cardLoading, setCardLoading] = useState(false)
-  const [cardError, setCardError] = useState('')
   const [newCard, setNewCard] = useState(null) // Store the new empty card
   const bottomRef = useRef(null)
   const [isAddingCard, setIsAddingCard] = useState(false) // Track if a card is being added
@@ -76,7 +76,6 @@ const Cards = () => {
   const handleCardSubmit = async (e) => {
     e.preventDefault()
     setCardLoading(true)
-    setCardError('')
 
     try {
       await api.post(`/card/${id}`, newCard)
@@ -86,7 +85,20 @@ const Cards = () => {
       const response = await api.get(`/card/${id}`)
       setCards(response.data.data)
     } catch (err) {
-      setCardError(err.response.data.message)
+      toast.error(err.response.data.message, {
+        style: {
+          border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
+          boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
+          borderRadius: "2rem",
+          padding: '10px',
+          paddingY: '20px',
+          color: '#ef4444',
+        },
+        iconTheme: {
+          primary: '#ef4444',
+          secondary: '#fff',
+        },
+      })
     } finally {
       setCardLoading(false)
     }
@@ -111,6 +123,7 @@ const Cards = () => {
       transition={{ duration: 0.5 }}
       className='w-full max-w-md'
     >
+      <Toaster position="top-right" />
       {/* Card Set Detail */}
       <p>Name: {cardSetDetails.name}</p>
 
@@ -207,7 +220,7 @@ const Cards = () => {
           </motion.div>
         )}
         {/* Error Message */}
-        {cardError && <p className="text-red-500">{cardError}</p>}
+        {/* {cardError && <p className="text-red-500">{cardError}</p>} */}
       </AnimatePresence>
 
       <div ref={bottomRef} />

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import * as motion from "motion/react-client"
 import { useNavigate, Navigate } from 'react-router-dom'
+import toast, { Toaster } from 'react-hot-toast'
 import API from '../utils/api'
 import { Button } from '../components/ui'
 
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const userType = localStorage.getItem('userType')
@@ -34,7 +34,20 @@ const Login = () => {
         navigate('/')
       }
     } catch (err) {
-      setError(err.response.data.message || 'An error occurred')
+      toast.error(err.response.data.message, {
+        style: {
+          border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
+          boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
+          borderRadius: "2rem",
+          padding: '10px',
+          paddingY: '20px',
+          color: '#ef4444',
+        },
+        iconTheme: {
+          primary: '#ef4444',
+          secondary: '#fff',
+        },
+      })
     }
   }
 
@@ -50,6 +63,7 @@ const Login = () => {
 
   return (
     <div className='md:min-h-screen flex items-center justify-center'>
+      <Toaster position="top-right" reverseOrder={true} />
       <motion.div
         className='bg-white shadow-lg border border-neutral-200/80 shadow-neutral-100 rounded-4xl p-12 w-full max-w-sm'
         initial={{ opacity: 0, scale: 0 }}
@@ -60,7 +74,6 @@ const Login = () => {
         }}
       >
         <h1>Login Peyds</h1>
-        {error && <p>{error}</p>}
         <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
           <input
             type="text"
