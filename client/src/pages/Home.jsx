@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
 import toast, { Toaster } from 'react-hot-toast'
+import Swal from 'sweetalert2'
 import api from '../utils/api'
 import { Link } from 'react-router-dom'
 
@@ -11,18 +12,34 @@ const Home = () => {
 
   // Card Sets Form
   const [cardSetLoading, setCardSetLoading] = useState(false)
-  const [cardSetError, setCardSetError] = useState('')
   const [cardSetFormData, setCardSetFormData] = useState({
     name: ''
   })
 
   // Handle the logout func
+
   const handleLogout = () => {
-    if (!window.confirm("Are you sure you want to logout?")) {
-      return
-    }
-    localStorage.removeItem('token')
-    window.location.href = '/login'
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your account.",
+      icon: "warning",
+      iconColor: "#f97316",
+      showCancelButton: true,
+      confirmButtonText: "ilogout mo bhie",
+      cancelButtonText: "Cancel",
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("token")
+        window.location.href = "/login"
+      }
+    })
   }
 
   // Fetch the current user's data
@@ -58,15 +75,14 @@ const Home = () => {
     } catch (err) {
       toast.error(err.response.data.message, {
         style: {
-          border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
-          boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
+          border: "1px solid rgba(229, 231, 235, 0.8)",
+          boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
           borderRadius: "2rem",
           padding: '10px',
-          paddingY: '20px',
-          color: '#ef4444',
+          color: '#f97316',
         },
         iconTheme: {
-          primary: '#ef4444',
+          primary: '#f97316',
           secondary: '#fff',
         },
       })
@@ -93,16 +109,61 @@ const Home = () => {
 
   // Delete Card Set
   const handleDeleteCardSet = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this card set?")) {
-      return
-    }
-    try {
-      await api.delete(`/cardSet/${id}`)
-      setCardSets(cardSets.filter((set) => set._id !== id))
-    } catch (error) {
-      console.log('Error fetching cards:', error)
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "The card set will be deleted.",
+      icon: "warning",
+      iconColor: "#f97316",
+      showCancelButton: true,
+      confirmButtonText: "idelete mo bhie",
+      cancelButtonText: "Cancel",
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup",
+        confirmButton: "swal-confirm",
+        cancelButton: "swal-cancel",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        (async () => {
+          try {
+            await api.delete(`/cardSet/${id}`)
+            setCardSets((prevCardSets) => prevCardSets.filter((set) => set._id !== id))
+            toast.success('Deleted successfully', {
+              style: {
+                border: "1px solid rgba(229, 231, 235, 0.8)",
+                boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+                borderRadius: "2rem",
+                padding: '10px',
+                color: '#84cc16',
+              },
+              iconTheme: {
+                primary: '#84cc16',
+                secondary: '#fff',
+              },
+            })
+          } catch (error) {
+            console.error("Error deleting card set:", error)
+            toast.error(error, {
+              style: {
+                border: "1px solid rgba(229, 231, 235, 0.8)",
+                boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+                borderRadius: "2rem",
+                padding: '10px',
+                color: '#f97316',
+              },
+              iconTheme: {
+                primary: '#f97316',
+                secondary: '#fff',
+              },
+            })
+          }
+        })()
+      }
+    })
   }
+
 
   return (
     <motion.div

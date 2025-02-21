@@ -33,6 +33,36 @@ h1 {
   @apply text-4xl font-bold;
 }
 
+/* -------- Sweet Alert Error --------- */
+/* Popup container */
+.swal-popup {
+  @apply rounded-3xl w-full max-w-sm bg-white;
+}
+
+/* Title styling */
+.swal-title {
+  @apply text-neutral-800 font-bold text-3xl;
+  font-family: "Nunito", serif;
+  font-optical-sizing: auto;
+  font-weight: auto;
+  font-style: normal;
+}
+
+/* Text styling */
+.swal-text {
+  @apply text-neutral-600;
+}
+
+/* Confirm button styling */
+.swal-confirm {
+  @apply px-5 py-2 rounded-full bg-orange-500 text-white cursor-pointer;
+}
+
+/* Cancel button styling */
+.swal-cancel {
+  @apply px-5 py-2 rounded-full bg-transparent hover:bg-neutral-50 text-neutral-700 transition duration-300 ease-in-out cursor-pointer;
+}
+
 /* -------- Spinner/Loading Styles -------- */
 /* From Uiverse.io by abrahamcalsin */
 .dot-spinner {

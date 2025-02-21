@@ -42,11 +42,10 @@ const Login = () => {
           boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
           borderRadius: "2rem",
           padding: '10px',
-          paddingY: '20px',
-          color: '#ef4444',
+          color: '#f97316',
         },
         iconTheme: {
-          primary: '#ef4444',
+          primary: '#f97316',
           secondary: '#fff',
         },
       })
