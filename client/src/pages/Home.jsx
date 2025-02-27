@@ -16,48 +16,6 @@ const Home = () => {
     name: ''
   })
 
-  // Handle the logout func
-
-  const handleLogout = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You will be logged out of your account.",
-      icon: "warning",
-      iconColor: "#f97316",
-      showCancelButton: true,
-      confirmButtonText: "ilogout mo bhie",
-      cancelButtonText: "Cancel",
-      customClass: {
-        title: "swal-title",
-        text: "swal-text",
-        popup: "swal-popup",
-        confirmButton: "swal-confirm",
-        cancelButton: "swal-cancel",
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem("token")
-        window.location.href = "/login"
-      }
-    })
-  }
-
-  // Fetch the current user's data
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await api.get('/user/me')
-        setUser(response.data)
-      } catch (error) {
-        console.log('Error fetching user data:', error)
-      }
-    }
-
-    fetchUser()
-    const interval = setInterval(fetchUser, 5000)
-    return () => clearInterval(interval)
-  }, [])
-
   // Card Set Submit
   const handleCardSetSubmit = async (e) => {
     e.preventDefault()
@@ -171,13 +129,13 @@ const Home = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className='w-full max-w-md'
+      className='border pt-36 px-24'
     >
       <Toaster position="top-right" />
       <h1>Home Peyds</h1>
-      <button onClick={handleLogout} className='rounded-md px-3 py-1.5 border'>Logout</button>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi sequi </p>
       {/* Greeting */}
-      <h2>Hello {user?.username}</h2>
+      {/* <h2>Hello {user?.username}</h2> */}
       {/* Add Card Set Form */}
       <form onSubmit={handleCardSetSubmit} className='border p-4'>
         <input
@@ -193,6 +151,7 @@ const Home = () => {
         </button>
       </form>
       {/* Card Sets */}
+      ilan na? {cardSets.length}
       <div className='border p-4'>
         <AnimatePresence initial={false}>
           {Array.isArray(cardSets) && cardSets.length > 0 ? (
