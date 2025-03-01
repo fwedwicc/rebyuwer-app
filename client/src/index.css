@@ -84,7 +84,7 @@ h1 {
 .dot-spinner {
   --uib-size: 1.4rem;
   --uib-speed: 0.9s;
-  --uib-color: #171717;
+  --uib-color: #000000;
   position: relative;
   display: flex;
   align-items: center;

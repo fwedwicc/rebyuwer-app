@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react'
-import api from '../../utils/api'
 import { useParams, Link, useLocation } from 'react-router-dom'
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
 import Swal from 'sweetalert2'
+import api from '../../utils/api'
 
 const Nav = () => {
+  const location = useLocation()
+  const [cardSetNameLoading, setCardSetNameLoading] = useState(true)
+  const [cardSetName, setCardSetName] = useState('')
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [user, setUser] = useState(null)
   const dropdownRef = useRef(null)
-  const location = useLocation()
 
   // Handle the logout func
   const handleLogout = () => {
@@ -52,6 +54,31 @@ const Nav = () => {
     const interval = setInterval(fetchUser, 5000)
     return () => clearInterval(interval)
   }, [])
+
+  // Fetch Card Set Details
+  useEffect(() => {
+    const match = location.pathname.match(/^\/card-set\/([a-zA-Z0-9]+)$/)
+    if (!match) return // If no ID in the URL, do nothing
+
+    const id = match[1] // Extract the ID from URL
+    setCardSetNameLoading(true)
+
+    const fetchCardSetDetails = async () => {
+      try {
+        const response = await api.get(`/cardSet`)
+        const currentCardSet = response.data.find(set => set._id === id)
+
+        if (currentCardSet) {
+          setCardSetName(currentCardSet.name)
+          setCardSetNameLoading(false)
+        }
+      } catch (error) {
+        console.log("Error fetching cards:", error)
+      }
+    }
+
+    fetchCardSetDetails()
+  }, [location.pathname])
 
   // Close the dropdown when clicked outside
   useEffect(() => {
@@ -103,7 +130,7 @@ const Nav = () => {
               exit={{
                 opacity: 0,
                 scale: 0,
-                transition: { duration: 0.2 },
+                transition: { duration: 0.3 },
               }}
               transition={{
                 duration: 0.2,
@@ -117,7 +144,7 @@ const Nav = () => {
               <span
                 className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-white backdrop-blur-3xl gap-3 px-4 py-1`}
               >
-                Cardsetname
+                {cardSetNameLoading ? '...' : <span className='truncate max-w-[9rem]'>{cardSetName}</span>}
               </span>
             </motion.div>
           )}
