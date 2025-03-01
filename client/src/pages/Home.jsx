@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
+import { Button } from '../components/ui'
 import toast, { Toaster } from 'react-hot-toast'
 import Swal from 'sweetalert2'
 import api from '../utils/api'
 import { Link } from 'react-router-dom'
 
 const Home = () => {
-  const [user, setUser] = useState(null)
   const [cardSets, setCardSets] = useState([])
 
   // Card Sets Form
@@ -24,6 +24,20 @@ const Home = () => {
 
     try {
       await api.post('/cardSet', cardSetFormData)
+      toast.success('Added successfully', {
+        style: {
+          border: "1px solid #262626",
+          background: "rgba(12, 10, 9)",
+          borderRadius: "2rem",
+          padding: '10px',
+          paddingLeft: '13px',
+          color: '#84cc16',
+        },
+        iconTheme: {
+          primary: '#84cc16',
+          secondary: '#fff',
+        },
+      })
       setCardSetFormData({
         name: ''
       })
@@ -33,10 +47,11 @@ const Home = () => {
     } catch (err) {
       toast.error(err.response.data.message, {
         style: {
-          border: "1px solid rgba(229, 231, 235, 0.8)",
-          boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+          border: "1px solid #262626",
+          background: "rgba(12, 10, 9)",
           borderRadius: "2rem",
           padding: '10px',
+          paddingLeft: '13px',
           color: '#f97316',
         },
         iconTheme: {
@@ -90,10 +105,11 @@ const Home = () => {
             setCardSets((prevCardSets) => prevCardSets.filter((set) => set._id !== id))
             toast.success('Deleted successfully', {
               style: {
-                border: "1px solid rgba(229, 231, 235, 0.8)",
-                boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+                border: "1px solid #262626",
+                background: "rgba(12, 10, 9)",
                 borderRadius: "2rem",
                 padding: '10px',
+                paddingLeft: '13px',
                 color: '#84cc16',
               },
               iconTheme: {
@@ -105,10 +121,11 @@ const Home = () => {
             console.error("Error deleting card set:", error)
             toast.error(error, {
               style: {
-                border: "1px solid rgba(229, 231, 235, 0.8)",
-                boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+                border: "1px solid #262626",
+                background: "rgba(12, 10, 9)",
                 borderRadius: "2rem",
                 padding: '10px',
+                paddingLeft: '13px',
                 color: '#f97316',
               },
               iconTheme: {
@@ -129,27 +146,32 @@ const Home = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className='border pt-36 px-24'
+      className='border pt-36 px-24 pb-24 space-y-12'
     >
       <Toaster position="top-right" />
-      <h1>Home Peyds</h1>
-      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi sequi </p>
-      {/* Greeting */}
-      {/* <h2>Hello {user?.username}</h2> */}
-      {/* Add Card Set Form */}
-      <form onSubmit={handleCardSetSubmit} className='border p-4'>
-        <input
-          type="text"
-          placeholder="Name"
-          value={cardSetFormData.name}
-          onChange={(e) => setCardSetFormData({ ...cardSetFormData, name: e.target.value })}
-          className='rounded-md px-3 py-1.5 border'
-        />
-        {/* Submit Button */}
-        <button type="submit" disabled={cardSetLoading} className='rounded-md px-3 py-1.5 border'>
-          {cardSetLoading ? 'Submitting...' : 'Add card set'}
-        </button>
-      </form>
+      <div className='flex flex-col items-center gap-2'>
+        <h1 className='text-center'>What do you want to learn?</h1>
+        <p className='text-center w-full max-w-xl'>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+        {/* Add Card Set Form */}
+        <form onSubmit={handleCardSetSubmit} className='mt-5 relative w-full max-w-md'>
+          {/* Icon */}
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-stone-500 size-8 absolute transform -translate-y-1/2 top-1/2 left-2.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
+          {/* Input Field */}
+          <input
+            type="text"
+            placeholder="E.g. Peroidic Table"
+            value={cardSetFormData.name}
+            onChange={(e) => setCardSetFormData({ ...cardSetFormData, name: e.target.value })}
+            className='w-full h-13 border rounded-full pl-12 pr-38'
+          />
+          {/* Submit Button */}
+          <Button type="submit" disabled={cardSetLoading} variant={'primary'} className='absolute transform -translate-y-1/2 top-1/2 right-[6.3px]'>
+            {cardSetLoading ? 'Submitting...' : 'Add card set'}
+          </Button>
+        </form>
+      </div>
       {/* Card Sets */}
       ilan na? {cardSets.length}
       <div className='border p-4'>

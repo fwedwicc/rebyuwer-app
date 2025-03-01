@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import api from '../../utils/api'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useLocation } from 'react-router-dom'
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
 import Swal from 'sweetalert2'
@@ -9,6 +9,7 @@ const Nav = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const [user, setUser] = useState(null)
   const dropdownRef = useRef(null)
+  const location = useLocation()
 
   // Handle the logout func
   const handleLogout = () => {
@@ -73,27 +74,50 @@ const Nav = () => {
         exit={{
           opacity: 0,
           scale: 0,
-          transition: { duration: 0.2 },
+          transition: { duration: 0.2, ease: "easeOut" }
         }}
         transition={{
           duration: 0.2,
+          ease: "easeInOut",
           scale: { type: "spring", visualDuration: 0.4, bounce: 0.2 },
         }}
-        layout
         className='flex gap-1 border p-1 rounded-full'
       >
         {/* Home */}
-        <Link to='/' className='border px-4 py-2 rounded-full'>Home</Link>
-        <p className='border px-4 py-2 rounded-full'>Cardsetname</p>
-
+        <Link to='/' className='border flex items-center justify-center px-4 py-1 rounded-full'>Home</Link>
+        {/* Card Set name */}
+        <AnimatePresence initial={false}>
+          {location.pathname.includes('card-set') && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{
+                opacity: 0,
+                scale: 0,
+                transition: { duration: 0.2 },
+              }}
+              transition={{
+                duration: 0.2,
+                scale: { type: "spring", visualDuration: 0.4, bounce: 0.2 },
+              }}
+              className='border flex items-center justify-center px-4 py-1 rounded-full'
+            >
+              Cardsetname
+            </motion.div>
+          )}
+        </AnimatePresence>
+        {/* Dropdown */}
         <div className="relative" ref={dropdownRef}>
           <button
-            className='border px-4 py-2 rounded-full'
+            className='flex items-center gap-2 border pl-1 pr-3 py-1 rounded-full text-sm'
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            Logged in as {user?.username}
+            <span className='block rounded-full size-9 border'></span>
+            {user?.username}
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`size-4 transform transition-transform duration-300 ease-in-out ${isDropdownOpen ? 'rotate-180' : ''}`}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
           </button>
-
           {/* Dropdown menu */}
           <AnimatePresence>
             {isDropdownOpen && (
@@ -106,13 +130,13 @@ const Nav = () => {
               >
                 <Link
                   to="/settings"
-                  className="block rounded-xl px-4 py-2 hover:bg-stone-900 transition duration-300 ease-in-out"
+                  className="block rounded-xl px-3 py-1 hover:bg-stone-900 transition duration-300 ease-in-out"
                 >
                   <button onClick={() => setIsDropdownOpen(!isDropdownOpen)}>Settings</button>
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="block rounded-xl w-full text-left px-4 py-2 hover:bg-stone-900 transition duration-300 ease-in-out"
+                  className="block rounded-xl w-full text-left px-3 py-1 hover:bg-stone-900 transition duration-300 ease-in-out"
                 >
                   Logout
                 </button>
