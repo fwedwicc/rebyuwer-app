@@ -2,9 +2,6 @@
 @import "tailwindcss";
 
 /* TEMP */
-* {
-  @apply border-stone-300;
-}
 
 body {
   @apply bg-stone-950 text-stone-300/90;
@@ -26,16 +23,30 @@ h5 {
   font-style: normal;
 }
 
-span {
-  @apply text-stone-300/90 leading-8;
-}
-
 p {
-  @apply text-stone-300/90;
+  @apply text-stone-400;
 }
 
 h1 {
   @apply text-4xl;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@layer utilities {
+  .animate-gradientMove {
+    animation: gradientMove 6s ease-in-out infinite;
+  }
 }
 
 /* -------- Sweet Alert Error --------- */

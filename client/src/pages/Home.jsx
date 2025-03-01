@@ -35,7 +35,7 @@ const Home = () => {
         },
         iconTheme: {
           primary: '#84cc16',
-          secondary: '#fff',
+          secondary: '#0c0a09',
         },
       })
       setCardSetFormData({
@@ -56,7 +56,7 @@ const Home = () => {
         },
         iconTheme: {
           primary: '#f97316',
-          secondary: '#fff',
+          secondary: '#0c0a09',
         },
       })
     } finally {
@@ -114,7 +114,7 @@ const Home = () => {
               },
               iconTheme: {
                 primary: '#84cc16',
-                secondary: '#fff',
+                secondary: '#0c0a09',
               },
             })
           } catch (error) {
@@ -130,7 +130,7 @@ const Home = () => {
               },
               iconTheme: {
                 primary: '#f97316',
-                secondary: '#fff',
+                secondary: '#0c0a09',
               },
             })
           }
@@ -146,7 +146,7 @@ const Home = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className='border pt-36 px-24 pb-24 space-y-12'
+      className='pt-36 px-24 pb-24 space-y-12'
     >
       <Toaster position="top-right" />
       <div className='flex flex-col items-center gap-2'>
@@ -155,7 +155,7 @@ const Home = () => {
         {/* Add Card Set Form */}
         <form onSubmit={handleCardSetSubmit} className='mt-5 relative w-full max-w-md'>
           {/* Icon */}
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="text-stone-500 size-8 absolute transform -translate-y-1/2 top-1/2 left-2.5">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.5} stroke="currentColor" className="text-stone-500 size-8 absolute transform -translate-y-1/2 top-1/2 left-2.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
           </svg>
           {/* Input Field */}
@@ -164,7 +164,7 @@ const Home = () => {
             placeholder="E.g. Peroidic Table"
             value={cardSetFormData.name}
             onChange={(e) => setCardSetFormData({ ...cardSetFormData, name: e.target.value })}
-            className='w-full h-13 border rounded-full pl-12 pr-38'
+            className='w-full h-13 border border-stone-800 rounded-full pl-12 pr-38 focus:shadow-2xl focus:shadow-indigo-500/20 focus:ring-2 focus:ring-indigo-300 focus:outline-none transition-all duration-300 ease-in-out'
           />
           {/* Submit Button */}
           <Button type="submit" disabled={cardSetLoading} variant={'primary'} className='absolute transform -translate-y-1/2 top-1/2 right-[6.3px]'>

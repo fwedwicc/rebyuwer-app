@@ -67,7 +67,7 @@ const Nav = () => {
   }, [])
 
   return (
-    <div className='fixed w-full flex items-center justify-center mt-4'>
+    <div className='z-50 fixed w-full flex items-center justify-center mt-4'>
       <motion.div
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -81,10 +81,19 @@ const Nav = () => {
           ease: "easeInOut",
           scale: { type: "spring", visualDuration: 0.4, bounce: 0.2 },
         }}
-        className='flex gap-1 border p-1 rounded-full'
+        className='flex gap-1 border border-stone-800 bg-stone-950 p-1 rounded-full'
       >
         {/* Home */}
-        <Link to='/' className='border flex items-center justify-center px-4 py-1 rounded-full'>Home</Link>
+        <Link to='/' className='relative overflow-hidden flex items-center justify-center p-[1px] rounded-full'>
+          {location.pathname === '/' && (
+            <span
+              className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}
+            />
+          )}
+          <span className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-white backdrop-blur-3xl gap-3 px-4 py-1 ${location.pathname === '/' ? '' : 'border border-stone-800'}`}>
+            Home
+          </span>
+        </Link>
         {/* Card Set name */}
         <AnimatePresence initial={false}>
           {location.pathname.includes('card-set') && (
@@ -100,16 +109,23 @@ const Nav = () => {
                 duration: 0.2,
                 scale: { type: "spring", visualDuration: 0.4, bounce: 0.2 },
               }}
-              className='border flex items-center justify-center px-4 py-1 rounded-full'
+              className='relative overflow-hidden flex items-center justify-center p-[1px] rounded-full'
             >
-              Cardsetname
+              <span
+                className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}
+              />
+              <span
+                className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-white backdrop-blur-3xl gap-3 px-4 py-1`}
+              >
+                Cardsetname
+              </span>
             </motion.div>
           )}
         </AnimatePresence>
         {/* Dropdown */}
         <div className="relative" ref={dropdownRef}>
           <button
-            className='flex items-center gap-2 border pl-1 pr-3 py-1 rounded-full text-sm'
+            className='flex items-center gap-2 border border-stone-800 bg-stone-950 pl-1 pr-3 py-1 rounded-full text-sm'
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             <span className='block rounded-full size-9 border'></span>
@@ -126,7 +142,7 @@ const Nav = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="absolute right-0 mt-2 w-36 bg-stone-950 border rounded-2xl p-2"
+                className="absolute right-0 mt-2 w-36 bg-stone-950 border rounded-2xl p-1.5"
               >
                 <Link
                   to="/settings"

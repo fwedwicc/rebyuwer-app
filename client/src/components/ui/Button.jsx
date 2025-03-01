@@ -2,8 +2,8 @@ import React from 'react'
 import { Spinner } from './index'
 
 const baseButton = 'flex items-center justify-center gap-2 px-5 py-2 rounded-full cursor-pointer transition duration-300 ease-in-out disabled:opacity-70 disabled:cursor-not-allowed'
-const primaryButton = 'bg-lime-400 hover:bg-lime-400/70 disabled:hover:bg-lime-400 text-neutral-900'
-const secondaryButton = 'bg-lime-50 text-black'
+const primaryButton = 'bg-gradient-to-r from-violet-300 via-violet-500 to-indigo-500 bg-[length:150%_150%] animate-gradientMove hover:bg-indigo-400/70 disabled:hover:bg-indigo-400 text-black font-semibold'
+const secondaryButton = 'bg-indigo-50 text-black'
 
 const Button = ({
   type = 'button',
