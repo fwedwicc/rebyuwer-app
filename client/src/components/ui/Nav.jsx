@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useParams, Link, useLocation } from 'react-router-dom'
 import * as motion from "motion/react-client"
+import Spinner from './Spinner'
 import { AnimatePresence } from "motion/react"
 import Swal from 'sweetalert2'
 import api from '../../utils/api'
@@ -143,7 +144,7 @@ const Nav = () => {
             <span
               className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 backdrop-blur-3xl gap-3 px-4 py-1`}
             >
-              {cardSetNameLoading ? '...' : <span className='truncate md:max-w-[8rem] max-w-[6rem] md:text-base text-sm'>{cardSetName}</span>}
+              {cardSetNameLoading ? <Spinner mode='light' /> : <span className='truncate md:max-w-[8rem] max-w-[6rem] md:text-base text-sm'>{cardSetName}</span>}
             </span>
           </motion.div>
         )}

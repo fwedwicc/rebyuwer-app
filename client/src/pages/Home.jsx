@@ -82,6 +82,62 @@ const Home = () => {
     return () => clearInterval(interval)
   }, [])
 
+  // Handle Edit Card Sets
+  const handleEdit = async (set) => {
+    const { value: formValues } = await Swal.fire({
+      title: 'Edit Card Set',
+      html: `
+        <div class="space-y-4 text-left">
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Name</label>
+            <input id="swal-name" class="mt-1 block w-full p-2 border rounded-md" value="${set.name}">
+          </div>
+        </div>
+      `,
+      focusConfirm: false,
+      showCancelButton: true,
+      preConfirm: () => {
+        return {
+          name: document.getElementById('swal-name').value
+        }
+      }
+    })
+
+    if (formValues) {
+      try {
+        const updateFormData = {
+          name: formValues.name
+        }
+
+        const response = await api.put(`/cardSet/${set._id}`, updateFormData)
+
+        // Update Card Set state with the updated Card Set
+        setCardSets((prevSets) =>
+          prevSets.map((item) =>
+            item._id === set._id ? { ...item, name: formValues.name } : item
+          )
+        );
+
+        toast.success('Card Set updated successfully!', {
+          style: {
+            border: "1px solid rgba(229, 231, 235, 0.8)",
+            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
+            borderRadius: "12px",
+            padding: '10px',
+            color: '#22c55e',
+          },
+          iconTheme: {
+            primary: '#22c55e',
+            secondary: '#fff',
+          },
+        })
+      } catch (error) {
+        console.error("Error updating Card Set:", error)
+        toast.error('Failed to update Card Set')
+      }
+    }
+  }
+
   // Delete Card Set
   const handleDeleteCardSet = async (id) => {
     Swal.fire({
@@ -182,7 +238,7 @@ const Home = () => {
       <div className='flex flex-col items-center gap-2'>
         {/* Greetings */}
         <h1 className='text-center'>What do you want to learn?</h1>
-        <p className='text-center w-full max-w-xl'>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+        <p className='text-center w-full max-w-xl'>Review, memorize, and master your subjects!</p>
         {/* Add Card Set Form */}
         <form onSubmit={handleCardSetSubmit} className='mt-5 relative w-full max-w-md'>
           {/* Icon */}
@@ -204,7 +260,7 @@ const Home = () => {
         </form>
       </div>
       {/* Card Sets */}
-      ilan na? {cardSets.length}
+      <span className='md:text-base text-sm'><span className='text-stone-100'>{cardSets.length} sets</span> waiting—ready to start learning?</span>
       <div className='mt-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2'>
         <AnimatePresence initial={false}>
           {Array.isArray(cardSets) && cardSets.length > 0 ? (
@@ -226,12 +282,12 @@ const Home = () => {
                 className='group relative block border-t border-l border-stone-900 bg-stone-900/10 rounded-3xl p-2 group cursor-pointer overflow-hidden'
               >
                 {/* Blur Effect */}
-                {/* <div className='size-24 bg-stone-700/70 group-hover:bg-stone-700/30 group-hover:size-36 transition-all duration-500 ease-in-out absolute -m-2 -z-10 blur-3xl'></div> */}
+                <div className='size-24 bg-stone-700/70 transition-all duration-500 ease-in-out absolute -m-2 -z-10 blur-3xl'></div>
                 {/* Top Card */}
                 <div className='absolute z-20 right-0'>
                   <div className="relative p-4" ref={(el) => (cardToggleRefs.current[set._id] = el)}>
                     {/* Toggle Button */}
-                    <button onClick={() => toggleCardMenu(set._id)}>
+                    <button onClick={() => toggleCardMenu(set._id)} className='cursor-pointer'>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
                       </svg>
@@ -244,19 +300,37 @@ const Home = () => {
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: 10 }}
                           transition={{ duration: 0.2 }}
-                          className="absolute right-12 top-0 mt-2.5 w-36 bg-stone-950 text-stone-200 border border-stone-800 rounded-2xl p-1.5 space-y-1"
+                          className="absolute md:right-13 right-12 md:-top-1.5 -top-2.5 mt-2.5 w-36 bg-stone-950 text-stone-200 border border-stone-800 rounded-2xl p-1.5 space-y-1"
                         >
-                          {/* <Link to={`/play/${set._id}`} className={`${set.cards.length === 0 ? 'bg-red-500' : ''}`}>Play</Link> */}
-                          {/* <button onClick={() => handleDeleteCardSet(set._id)} className='rounded-md px-3 py-1.5 border'>Delete</button> */}
-                          <Link
-                            to={`/play/${set._id}`}
-                            className="flex items-center md:text-base text-sm gap-2 rounded-xl px-3 py-2 hover:bg-stone-900/50 transition-all duration-300 ease-in-out"
+                          {set.cards.length === 0 ? (
+                            // Dummy disabled button when the card set has no cards
+                            <span className='flex items-center md:text-base text-sm gap-2 rounded-xl px-3 py-2 opacity-50 cursor-not-allowed'>
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                              </svg>
+                              Play
+                            </span>
+                          ) : (
+                            // Actual button itey
+                            <Link
+                              to={`/play/${set._id}`}
+                              className="flex items-center md:text-base text-sm gap-2 rounded-xl px-3 py-2 hover:bg-stone-900/50 transition-all duration-300 ease-in-out"
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                              </svg>
+                              Play
+                            </Link>
+                          )}
+                          <button
+                            onClick={() => handleEdit(set)}
+                            className="flex items-center md:text-base text-sm gap-2 cursor-pointer rounded-xl w-full text-left px-3 py-2 hover:bg-stone-900/50 transition duration-300 ease-in-out"
                           >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
                             </svg>
-                            Play
-                          </Link>
+                            Edit
+                          </button>
                           <button
                             onClick={() => handleDeleteCardSet(set._id)}
                             className="flex items-center md:text-base text-sm gap-2 cursor-pointer rounded-xl w-full text-left px-3 py-2 hover:bg-stone-900/50 transition duration-300 ease-in-out"
@@ -279,7 +353,7 @@ const Home = () => {
                   <div className='flex justify-between items-end'>
                     <p className='p-4'>{set.cards.length} card/s</p>
                     <span className='relative rounded-full size-9 flex items-center justify-center leading-none border-t border-stone-700 bg-stone-900/20 group-hover:bg-indigo-900/5 group-hover:border-indigo-700 transition-all duration-300 ease-in-out overflow-hidden'>
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-6 group-hover:rotate-45 transition-all duration-300 ease-in-out group-hover:text-indigo-400">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-6 -rotate-90 group-hover:rotate-0 transition-all duration-300 ease-in-out group-hover:text-indigo-400">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
                       </svg>
                       <span className='size-2 rounded-full absolute bottom-0 bg-stone-700 group-hover:bg-indigo-700 transition-all duration-300 ease-in-out blur-sm' />

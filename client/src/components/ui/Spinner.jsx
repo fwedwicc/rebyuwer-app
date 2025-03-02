@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Spinner = () => {
+const Spinner = ({ mode = 'dark' }) => {
   return (
-    <div className="dot-spinner">
+    <div className={`${mode === 'light' ? 'dot-spinner__light' : 'dot-spinner__dark'}`}>
       <div className="dot-spinner__dot"></div>
       <div className="dot-spinner__dot"></div>
       <div className="dot-spinner__dot"></div>
