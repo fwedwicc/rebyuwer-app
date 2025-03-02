@@ -143,7 +143,7 @@ const Nav = () => {
             <span
               className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 backdrop-blur-3xl gap-3 px-4 py-1`}
             >
-              {cardSetNameLoading ? '...' : <span className='truncate max-w-[6rem] md:text-base text-sm'>{cardSetName}</span>}
+              {cardSetNameLoading ? '...' : <span className='truncate md:max-w-[8rem] max-w-[6rem] md:text-base text-sm'>{cardSetName}</span>}
             </span>
           </motion.div>
         )}

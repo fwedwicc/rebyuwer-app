@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { Nav } from './components/ui'
-import { Login, Register, Home, Admin, Cards } from './pages'
+import { Login, Register, Home, Admin, Cards, Play } from './pages'
 import Auth from './routes/Auth'
 
 const App = () => {
@@ -16,6 +16,7 @@ const App = () => {
         <Route path="/" element={<Auth><Home /></Auth>} />
         <Route path="/admin" element={<Auth><Admin /></Auth>} />
         <Route path="/card-set/:id" element={<Auth><Cards /></Auth>} />
+        <Route path="/play/:id" element={<Auth><Play /></Auth>} />
       </Routes>
     </>
   )

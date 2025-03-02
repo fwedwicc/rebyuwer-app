@@ -196,6 +196,7 @@ const Home = () => {
               >
                 <p>Name: {set.name}</p>
                 <p>Card count: {set.cards.length}</p>
+                <Link to={`/play/${set._id}`} className={`${set.cards.length === 0 ? 'bg-red-500' : ''}`}>Play</Link>
                 <Link to={`/card-set/${set._id}`} className='rounded-md px-3 py-1.5 border'>View</Link>
                 <button onClick={() => handleDeleteCardSet(set._id)} className='rounded-md px-3 py-1.5 border'>Delete</button>
               </motion.div>
