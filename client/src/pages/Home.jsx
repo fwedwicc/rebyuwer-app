@@ -146,7 +146,7 @@ const Home = () => {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
-      className='pt-36 px-24 pb-24 space-y-12'
+      className='md:pt-36 pt-28 md:px-24 px-4 md:pb-24 pb-4 space-y-12'
     >
       <Toaster position="top-right" />
       <div className='flex flex-col items-center gap-2'>
@@ -164,7 +164,7 @@ const Home = () => {
             placeholder="E.g. Peroidic Table"
             value={cardSetFormData.name}
             onChange={(e) => setCardSetFormData({ ...cardSetFormData, name: e.target.value })}
-            className='w-full h-13 border border-stone-800 rounded-full pl-12 pr-38 focus:shadow-2xl focus:shadow-indigo-500/20 focus:ring-2 focus:ring-indigo-300 focus:outline-none transition-all duration-300 ease-in-out'
+            className='w-full md:text-base text-sm h-13 border border-stone-800 rounded-full pl-12 md:pr-38 pr-[8.5rem] focus:shadow-2xl md:focus:shadow-indigo-500/20 focus:shadow-indigo-400/30 focus:ring-2 focus:ring-indigo-300 focus:outline-none transition-all duration-300 ease-in-out'
           />
           {/* Submit Button */}
           <Button type="submit" disabled={cardSetLoading} variant={'primary'} className='absolute transform -translate-y-1/2 top-1/2 right-[6.3px]'>
