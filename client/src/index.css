@@ -30,6 +30,9 @@ p {
 h1 {
   @apply text-4xl;
 }
+h2 {
+  @apply md:text-3xl text-2xl;
+}
 
 @keyframes gradientMove {
   0% {

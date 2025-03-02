@@ -57,10 +57,10 @@ const Nav = () => {
 
   // Fetch Card Set Details
   useEffect(() => {
-    const match = location.pathname.match(/^\/card-set\/([a-zA-Z0-9]+)$/)
+    const match = location.pathname.match(/^\/(card-set|play)\/([a-zA-Z0-9]+)$/)
     if (!match) return // If no ID in the URL, do nothing
 
-    const id = match[1] // Extract the ID from URL
+    const id = match ? match[2] : null
     setCardSetNameLoading(true)
 
     const fetchCardSetDetails = async () => {
@@ -122,7 +122,7 @@ const Nav = () => {
       </Link>
       {/* Card Set name */}
       <AnimatePresence initial={false}>
-        {location.pathname.includes('card-set') && (
+        {(location.pathname.includes('card-set') || location.pathname.includes('play')) && (
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -175,7 +175,7 @@ const Nav = () => {
             >
               <Link
                 to="/settings"
-                className="group block rounded-xl px-3 py-2 hover:bg-stone-900/50 transition duration-300 ease-in-out"
+                className="group block rounded-xl md:text-base text-sm px-3 py-2 hover:bg-stone-900/50 transition duration-300 ease-in-out"
               >
                 <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className='flex items-center gap-2'>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300 group-hover:rotate-90 transition-all duration-300 ease-in-out">
@@ -187,7 +187,7 @@ const Nav = () => {
               </Link>
               <button
                 onClick={handleLogout}
-                className="group flex items-center gap-2 cursor-pointer rounded-xl w-full text-left px-3 py-2 hover:bg-stone-900/50 transition duration-300 ease-in-out"
+                className="group flex items-center md:text-base text-sm gap-2 cursor-pointer rounded-xl w-full text-left px-3 py-2 hover:bg-stone-900/50 transition duration-300 ease-in-out"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300 rotate-90 group-hover:rotate-270 transition-all duration-300 ease-in-out">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
