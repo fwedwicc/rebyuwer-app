@@ -51,31 +51,26 @@ h2 {
 /* -------- Sweet Alert Error --------- */
 /* Popup container */
 .swal-popup {
-  @apply rounded-3xl w-full max-w-sm bg-white;
+  @apply rounded-3xl w-full max-w-sm bg-stone-950 border border-stone-800/60 text-stone-400 md:text-base text-sm;
 }
 
 /* Title styling */
 .swal-title {
-  @apply text-stone-800 font-bold text-3xl;
-  font-family: "Nunito", serif;
+  @apply text-stone-100 font-medium text-3xl;
+  font-family: "Montserrat", serif;
   font-optical-sizing: auto;
   font-weight: auto;
   font-style: normal;
 }
 
-/* Text styling */
-.swal-text {
-  @apply text-stone-600;
-}
-
-/* Confirm button styling */
-.swal-confirm {
-  @apply px-5 py-2 rounded-full bg-orange-500 text-white cursor-pointer;
+/* DANGER: Confirm button */
+.swal-confirm-danger {
+  @apply px-4 py-2 md:text-base text-sm rounded-full bg-orange-400 text-black font-semibold cursor-pointer transition-all duration-300 ease-in-out;
 }
 
 /* Cancel button styling */
 .swal-cancel {
-  @apply px-5 py-2 rounded-full bg-transparent hover:bg-stone-50 text-stone-700 transition duration-300 ease-in-out cursor-pointer;
+  @apply px-4 py-2 md:text-base text-sm rounded-full bg-transparent hover:bg-stone-900/60 text-stone-300 cursor-pointer;
 }
 
 /* -------- Spinner/Loading Styles -------- */

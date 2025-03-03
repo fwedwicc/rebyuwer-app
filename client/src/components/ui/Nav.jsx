@@ -21,7 +21,7 @@ const Nav = () => {
       title: "Are you sure?",
       text: "You will be logged out of your account.",
       icon: "warning",
-      iconColor: "#f97316",
+      iconColor: "#fb923c",
       showCancelButton: true,
       confirmButtonText: "ilogout mo bhie",
       cancelButtonText: "Cancel",
@@ -29,7 +29,7 @@ const Nav = () => {
         title: "swal-title",
         text: "swal-text",
         popup: "swal-popup",
-        confirmButton: "swal-confirm",
+        confirmButton: "swal-confirm-danger",
         cancelButton: "swal-cancel",
       },
     }).then((result) => {
