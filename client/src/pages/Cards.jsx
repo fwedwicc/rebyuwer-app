@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
+import { Spinner } from '../components/ui'
 import toast, { Toaster } from 'react-hot-toast'
 import { Link, useParams } from 'react-router-dom'
 import api from '../utils/api'
@@ -131,8 +132,9 @@ const Cards = () => {
   return (
     <>
       {loading ?
-        <div className='h-screen flex justify-center items-center'>
-          Launching {cardSetDetails.name}
+        <div className='h-screen flex flex-col text-center gap-1 justify-center items-center'>
+          <Spinner mode='light' />
+          Launching <br /> <h2 className='truncate w-full max-w-[15rem]'>{cardSetDetails.name || '...'}</h2>
         </div>
         : (
           <motion.div
@@ -144,30 +146,32 @@ const Cards = () => {
           >
             <Toaster position="top-right" />
             {/* Play Button */}
-            {cards.length === 0 ? (
-              // Dummy disabled button when the card set has no cards
-              <button
-                className="fixed group bottom-12 right-12 rounded-full size-13 flex items-center justify-center leading-none border-t bg-indigo-900/5 border-indigo-700 transition-all duration-300 ease-in-out cursor-not-allowed overflow-hidden opacity-50"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-7 text-indigo-400">
-                  <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
-                </svg>
-                <span className='size-2 rounded-full absolute bottom-0 bg-indigo-700 blur-sm' />
-              </button>
-            ) : (
-              // Actual button itey
-              <Link
-                to={`/play/${id}`}
-                className="fixed group bottom-12 right-12 rounded-full size-13 flex items-center justify-center leading-none border-t bg-indigo-900/5 border-indigo-700 transition-all duration-300 ease-in-out cursor-pointer overflow-hidden"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-7 transition-all duration-300 ease-in-out text-indigo-400 group-hover:size-7">
-                  <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
-                </svg>
-                <span className='size-2 rounded-full absolute bottom-0 bg-indigo-700 transition-all duration-300 ease-in-out blur-sm' />
-              </Link>
-            )}
+            <div className='fixed z-50 bg-stone-950/70 overflow-hidden backdrop-blur-sm rounded-full size-13 md:bottom-12 bottom-6 md:right-12 right-6'>
+              {cards.length === 0 ? (
+                // Dummy disabled button when the card set has no cards
+                <button
+                  className="group rounded-full size-13 flex items-center justify-center leading-none border-t bg-indigo-900/5 border-indigo-700 transition-all duration-300 ease-in-out cursor-not-allowed overflow-hidden opacity-50"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-7 text-indigo-400">
+                    <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
+                  </svg>
+                  <span className='size-2 rounded-full absolute bottom-0 bg-indigo-700 blur-sm' />
+                </button>
+              ) : (
+                // Actual button itey
+                <Link
+                  to={`/play/${id}`}
+                  className="group rounded-full size-13 flex items-center justify-center leading-none border-t bg-indigo-900/5 border-indigo-700 transition-all duration-300 ease-in-out cursor-pointer overflow-hidden"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-7 transition-all duration-300 ease-in-out text-indigo-400 group-hover:size-7">
+                    <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
+                  </svg>
+                  <span className='size-2 rounded-full absolute bottom-0 bg-indigo-700 transition-all duration-300 ease-in-out blur-sm' />
+                </Link>
+              )}
+            </div>
             {/* Cards List */}
-            <div className='md:text-base text-sm pb-4'><span className='text-stone-100'>{cards.length} cards</span> waiting—ready to start learning?</div>
+            {cards.length > 0 && <div className='md:text-base text-sm mb-4'><span className='text-stone-100'>{cards.length} card/s</span>  available—keep building your deck!</div>}
             {Array.isArray(cards) && cards.length > 0 ? (
               <AnimatePresence initial={false}>
                 {cards.map((card) => (
@@ -189,13 +193,12 @@ const Cards = () => {
                   >
                     <div>
                       <p className='pb-2 pl-3 leading-none text-stone-400 text-xs'>Front</p>
-                      <div className='border border-stone-900 px-3 py-2 rounded-xl'>{card.question}</div>
+                      <div className='border border-stone-900 px-3 py-2 rounded-xl md:text-base text-sm'>{card.question}</div>
                     </div>
                     <div>
                       <p className='pb-2 pl-3 leading-none text-stone-400 text-xs'>Back</p>
-                      <div className='border border-stone-900 px-3 py-2 rounded-xl'>{card.answer}</div>
+                      <div className='border border-stone-900 px-3 py-2 rounded-xl md:text-base text-sm'>{card.answer}</div>
                     </div>
-
                     <div className='col-span-full flex justify-end gap-2'>
                       <button
                         className="flex items-center md:text-base text-sm gap-1.5 rounded-xl px-3 py-2 bg-stone-900/50 hover:bg-stone-900/70 transition-all duration-300 ease-in-out cursor-pointer"
@@ -219,7 +222,27 @@ const Cards = () => {
                 ))}
               </AnimatePresence>
             ) : (
-              <p>No cards available</p>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.8,
+                  transition: { duration: 0.4 },
+                }}
+                transition={{
+                  duration: 0.2,
+                  scale: { type: "spring", visualDuration: 0.4, bounce: 0.2 },
+                }}
+                layout
+                className='w-full flex flex-col gap-2 justify-center items-center py-12 text-center'
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="size-10 text-stone-400">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+                </svg>
+                <h2>No cards yet</h2>
+                <span className='md:text-base text-sm text-stone-300'>Add your first card and <br className='block md:hidden' /> begin learning!</span>
+              </motion.div>
             )}
 
             {/* Add Card Button */}

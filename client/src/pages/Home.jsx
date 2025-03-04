@@ -26,7 +26,7 @@ const Home = () => {
 
     try {
       await api.post('/cardSet', cardSetFormData)
-      toast.success('Added successfully', {
+      toast.success('Card set added!', {
         style: {
           border: "1px solid #262626",
           background: "rgba(12, 10, 9)",
@@ -118,17 +118,18 @@ const Home = () => {
           )
         );
 
-        toast.success('Card Set updated successfully!', {
+        toast.success('Card set updated!', {
           style: {
-            border: "1px solid rgba(229, 231, 235, 0.8)",
-            boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)",
-            borderRadius: "12px",
+            border: "1px solid #262626",
+            background: "rgba(12, 10, 9)",
+            borderRadius: "2rem",
             padding: '10px',
-            color: '#22c55e',
+            paddingLeft: '13px',
+            color: '#34d399',
           },
           iconTheme: {
-            primary: '#22c55e',
-            secondary: '#fff',
+            primary: '#34d399',
+            secondary: '#0c0a09',
           },
         })
       } catch (error) {
@@ -161,7 +162,7 @@ const Home = () => {
           try {
             await api.delete(`/cardSet/${id}`)
             setCardSets((prevCardSets) => prevCardSets.filter((set) => set._id !== id))
-            toast.success('Deleted successfully', {
+            toast.success('Card set deleted!', {
               style: {
                 border: "1px solid #262626",
                 background: "rgba(12, 10, 9)",
@@ -237,7 +238,7 @@ const Home = () => {
       <Toaster position="top-right" />
       <div className='flex flex-col items-center gap-2'>
         {/* Greetings */}
-        <h1 className='text-center'>What do you want to learn?</h1>
+        <h1 className='text-center'>What do you <br className='block md:hidden' /> want to learn?</h1>
         <p className='text-center w-full max-w-xl'>Review, memorize, and master your subjects!</p>
         {/* Add Card Set Form */}
         <form onSubmit={handleCardSetSubmit} className='mt-5 relative w-full max-w-md'>
@@ -259,9 +260,8 @@ const Home = () => {
           </Button>
         </form>
       </div>
-      {/* Card Sets */}
-      <span className='md:text-base text-sm'><span className='text-stone-100'>{cardSets.length} sets</span> waiting—ready to start learning?</span>
-      <div className='mt-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2'>
+      {cardSets.length > 0 && <span className='md:text-base text-sm'><span className='text-stone-100'>{cardSets.length} set/s</span> waiting—ready to start learning?</span>}
+      <div className='relative mt-4 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2'>
         <AnimatePresence initial={false}>
           {Array.isArray(cardSets) && cardSets.length > 0 ? (
             cardSets.map((set) => (
@@ -363,7 +363,27 @@ const Home = () => {
               </motion.div>
             ))
           ) : (
-            <li>No card set available</li>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{
+                opacity: 0,
+                scale: 0.8,
+                transition: { duration: 0.2 },
+              }}
+              transition={{
+                duration: 0.2,
+                scale: { type: "spring", visualDuration: 0.4, bounce: 0.2 },
+              }}
+              layout
+              className='absolute w-full flex flex-col gap-2 justify-center items-center py-12 text-center'
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="size-10 text-stone-400">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+              </svg>
+              <h2>No set yet</h2>
+              <span className='md:text-base text-sm text-stone-300'>Start your learning journey <br className='block md:hidden' /> by creating one!</span>
+            </motion.div>
           )}
         </AnimatePresence>
       </div>
