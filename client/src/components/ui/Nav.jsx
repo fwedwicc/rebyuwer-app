@@ -18,12 +18,12 @@ const Nav = () => {
   const handleLogout = () => {
     setIsDropdownOpen(false)
     Swal.fire({
-      title: "Are you sure?",
+      title: "Leaving so soon?",
       text: "You will be logged out of your account.",
       icon: "warning",
-      iconColor: "#fb923c",
+      iconColor: "#fb7185",
       showCancelButton: true,
-      confirmButtonText: "ilogout mo bhie",
+      confirmButtonText: "Yes, log me out",
       cancelButtonText: "Cancel",
       customClass: {
         title: "swal-title",

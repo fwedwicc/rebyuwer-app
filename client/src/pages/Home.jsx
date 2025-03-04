@@ -33,10 +33,10 @@ const Home = () => {
           borderRadius: "2rem",
           padding: '10px',
           paddingLeft: '13px',
-          color: '#84cc16',
+          color: '#34d399',
         },
         iconTheme: {
-          primary: '#84cc16',
+          primary: '#34d399',
           secondary: '#0c0a09',
         },
       })
@@ -54,10 +54,10 @@ const Home = () => {
           borderRadius: "2rem",
           padding: '10px',
           paddingLeft: '13px',
-          color: '#f97316',
+          color: '#fb7185',
         },
         iconTheme: {
-          primary: '#f97316',
+          primary: '#fb7185',
           secondary: '#0c0a09',
         },
       })
@@ -141,18 +141,18 @@ const Home = () => {
   // Delete Card Set
   const handleDeleteCardSet = async (id) => {
     Swal.fire({
-      title: "Are you sure?",
-      text: "The card set will be deleted.",
+      title: "Delete this card set?",
+      text: "This card set will be permanently deleted.",
       icon: "warning",
-      iconColor: "#f97316",
+      iconColor: "#fb7185",
       showCancelButton: true,
-      confirmButtonText: "idelete mo bhie",
+      confirmButtonText: "Yes, delete it",
       cancelButtonText: "Cancel",
       customClass: {
         title: "swal-title",
         text: "swal-text",
         popup: "swal-popup",
-        confirmButton: "swal-confirm",
+        confirmButton: "swal-confirm-danger",
         cancelButton: "swal-cancel",
       },
     }).then((result) => {
@@ -168,10 +168,10 @@ const Home = () => {
                 borderRadius: "2rem",
                 padding: '10px',
                 paddingLeft: '13px',
-                color: '#84cc16',
+                color: '#34d399',
               },
               iconTheme: {
-                primary: '#84cc16',
+                primary: '#34d399',
                 secondary: '#0c0a09',
               },
             })
@@ -184,10 +184,10 @@ const Home = () => {
                 borderRadius: "2rem",
                 padding: '10px',
                 paddingLeft: '13px',
-                color: '#f97316',
+                color: '#fb7185',
               },
               iconTheme: {
-                primary: '#f97316',
+                primary: '#fb7185',
                 secondary: '#0c0a09',
               },
             })
@@ -345,9 +345,9 @@ const Home = () => {
                     </AnimatePresence>
                   </div>
                 </div>
-                <Link to={`/card-set/${set._id}`} className='md:space-y-8 space-y-4'>
+                <Link to={`/card-set/${set._id}`} className='flex flex-col justify-between md:h-40 h-32'>
                   <div className='flex items-start'>
-                    <h2 className='p-4'>{set.name}</h2>
+                    <h2 className='p-4 mr-5 break-all md:line-clamp-3 line-clamp-2 pb-[2px]'>{set.name}</h2>
                   </div>
                   {/* Bottom card */}
                   <div className='flex justify-between items-end'>

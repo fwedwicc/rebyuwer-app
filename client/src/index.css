@@ -65,7 +65,7 @@ h2 {
 
 /* DANGER: Confirm button */
 .swal-confirm-danger {
-  @apply px-4 py-2 md:text-base text-sm rounded-full bg-orange-400 text-black font-semibold cursor-pointer transition-all duration-300 ease-in-out;
+  @apply px-4 py-2 md:text-base text-sm rounded-full bg-rose-400 text-black font-semibold cursor-pointer transition-all duration-300 ease-in-out;
 }
 
 /* Cancel button styling */
