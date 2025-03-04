@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
 import toast, { Toaster } from 'react-hot-toast'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import api from '../utils/api'
 
 const Cards = () => {
@@ -19,7 +19,7 @@ const Cards = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1000)
+    }, 2000)
 
     return () => clearTimeout(timer)
   }, [])
@@ -128,53 +128,74 @@ const Cards = () => {
   return (
     <>
       {loading ?
-        <>
+        <div className='h-screen flex justify-center items-center'>
           Launching {cardSetDetails.name}
-        </>
+        </div>
         : (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className='w-full max-w-lg'
+            className='md:pt-36 pt-28 md:px-48 px-4 md:pb-28 pb-4'
           >
             <Toaster position="top-right" />
-            {/* Card Set Detail */}
-            <p>Name: {cardSetDetails.name}</p>
-
             {/* Cards List */}
+            <div className='md:text-base text-sm pb-4'><span className='text-stone-100'>{cards.length} cards</span> waiting—ready to start learning?
+              {cards.length === 0 ? (
+                // Dummy disabled button when the card set has no cards
+                <span className='flex items-center md:text-base text-sm gap-2 rounded-xl px-3 py-2 opacity-50 cursor-not-allowed'>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                  </svg>
+                  Play
+                </span>
+              ) : (
+                // Actual button itey
+                <Link
+                  to={`/play/${id}`}
+                  className="flex items-center md:text-base text-sm gap-2 rounded-xl px-3 py-2 hover:bg-stone-900/50 transition-all duration-300 ease-in-out"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                  </svg>
+                  Play
+                </Link>
+              )}
+            </div>
             {Array.isArray(cards) && cards.length > 0 ? (
               <AnimatePresence initial={false}>
                 {cards.map((card) => (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
+                    initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{
                       opacity: 0,
-                      scale: 0,
-                      transition: { duration: 0.2 },
+                      scale: 0.5,
+                      transition: { duration: 0.3 },
                     }}
                     transition={{
-                      duration: 0.2,
-                      scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
+                      duration: 0.3,
+                      scale: { type: "spring", visualDuration: 0.3, bounce: 0.2 },
                     }}
                     layout
                     key={card._id}
-                    className='border p-2'
+                    className='border border-stone-800 p-2 grid md:grid-cols-2 grid-cols-1 gap-2 rounded-2xl mb-3'
                   >
-                    <p>Front: {card.question}</p>
-                    <p>Back: {card.answer}</p>
-                    <button
-                      onClick={() => handleDeleteCard(card._id)}
-                      className='rounded-md px-3 py-1.5 border'>Delete Card</button>
+                    <div className='border px-2.5 py-2 rounded-xl'>Front: {card.question}</div>
+                    <div className='border px-2.5 py-2 rounded-xl'>Back: {card.answer}</div>
+                    <div className='col-span-full flex justify-end'>
+                      <button className='rounded-md px-3 py-1.5 border'>Edit Card</button>
+                      <button
+                        onClick={() => handleDeleteCard(card._id)}
+                        className='rounded-md px-3 py-1.5 border'>Delete Card</button>
+                    </div>
                   </motion.div>
                 ))}
               </AnimatePresence>
             ) : (
               <p>No cards available</p>
             )}
-
 
             {/* Add Card Button */}
             <button
@@ -184,22 +205,21 @@ const Cards = () => {
               Add Card
             </button>
 
-
             {/* New Card Input Fields */}
             <AnimatePresence initial={false}>
               {newCard && (
                 <motion.div
                   className='border p-2  flex flex-col w-full'
-                  initial={{ opacity: 0, scale: 0 }}
+                  initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{
                     opacity: 0,
-                    scale: 0,
+                    scale: 0.5,
                     transition: { duration: 0.3 },
                   }}
                   transition={{
-                    duration: 0.4,
-                    scale: { type: "spring", visualDuration: 0.4, bounce: 0.3 },
+                    duration: 0.3,
+                    scale: { type: "spring", visualDuration: 0.3, bounce: 0.2 },
                   }}
                   layout
                 >
@@ -235,12 +255,8 @@ const Cards = () => {
                   </button>
                 </motion.div>
               )}
-              {/* Error Message */}
-              {/* {cardError && <p className="text-red-500">{cardError}</p>} */}
             </AnimatePresence>
-
             <div ref={bottomRef} />
-
           </motion.div>)}
     </>
   )
