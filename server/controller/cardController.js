@@ -22,7 +22,7 @@ export const addCards = async (req, res) => {
   const { cardSetId } = req.params
 
   if (!question || !answer) {
-    return res.status(400).json({ success: false, message: "Question and answer are required" })
+    return res.status(400).json({ success: false, message: "All fields are required" })
   }
 
   // Ensure the set belongs to the user

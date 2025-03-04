@@ -2,50 +2,61 @@
 @import "tailwindcss";
 
 /* TEMP */
-
-body {
-  @apply bg-stone-950 text-stone-300/90;
-  font-family: "Inter", serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5 {
-  @apply text-stone-100 leading-none;
-  font-family: "Montserrat", serif;
-  font-optical-sizing: auto;
-  font-weight: auto;
-  font-style: normal;
-}
-
-h1 {
-  @apply text-4xl;
-}
-h2 {
-  @apply md:text-3xl text-2xl;
-}
-
-@keyframes gradientMove {
-  0% {
-    background-position: 0% 50%;
+@layer base {
+  body {
+    @apply bg-stone-950 text-stone-300/90;
+    font-family: "Inter", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
   }
-  50% {
-    background-position: 100% 50%;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply text-stone-100 leading-none;
+    font-family: "Montserrat", serif;
+    font-optical-sizing: auto;
+    font-weight: auto;
+    font-style: normal;
   }
-  100% {
-    background-position: 0% 50%;
+
+  h1 {
+    @apply text-4xl;
+  }
+  h2 {
+    @apply md:text-3xl text-2xl;
   }
 }
 
 @layer utilities {
+  @keyframes gradientMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
   .animate-gradientMove {
     animation: gradientMove 6s ease-in-out infinite;
   }
+}
+
+/* -------- Custom Scrollbar --------- */
+body::-webkit-scrollbar {
+  @apply w-[9px];
+}
+body::-webkit-scrollbar-track {
+  @apply bg-transparent rounded-[10px];
+}
+body::-webkit-scrollbar-thumb {
+  @apply rounded-[10px] border-stone-800/80 bg-stone-800/20 border-solid border;
 }
 
 /* -------- Sweet Alert Error --------- */
@@ -61,6 +72,11 @@ h2 {
   font-optical-sizing: auto;
   font-weight: auto;
   font-style: normal;
+}
+
+/* CONFIRM: Confirm button */
+.swal-confirm-confirm {
+  @apply px-4 py-2 md:text-base text-sm rounded-full bg-indigo-400 text-black font-semibold cursor-pointer transition-all duration-300 ease-in-out;
 }
 
 /* DANGER: Confirm button */

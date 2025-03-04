@@ -85,17 +85,24 @@ const Home = () => {
   // Handle Edit Card Sets
   const handleEdit = async (set) => {
     const { value: formValues } = await Swal.fire({
-      title: 'Edit Card Set',
+      title: 'Edit Set Name',
       html: `
         <div class="space-y-4 text-left">
           <div>
-            <label class="block text-sm font-medium text-gray-700">Name</label>
-            <input id="swal-name" class="mt-1 block w-full p-2 border rounded-md" value="${set.name}">
+            <label class="block text-sm font-medium text-stone-300">Name</label>
+            <input id="swal-name" class="mt-1 block w-full py-2 px-3 border rounded-full text-stone-300 transition-all duration-300 ease-in-out focus:outline-none focus:ring focus:ring-indigo-400 border-stone-800" value="${set.name}">
           </div>
         </div>
       `,
-      focusConfirm: false,
       showCancelButton: true,
+      confirmButtonText: 'Update',
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup",
+        confirmButton: "swal-confirm-confirm",
+        cancelButton: "swal-cancel",
+      },
       preConfirm: () => {
         return {
           name: document.getElementById('swal-name').value
@@ -256,7 +263,7 @@ const Home = () => {
           />
           {/* Submit Button */}
           <Button type="submit" disabled={cardSetLoading} variant={'primary'} className='absolute transform -translate-y-1/2 top-1/2 right-[6.3px]'>
-            {cardSetLoading ? 'Submitting...' : 'Add card set'}
+            {cardSetLoading ? 'Adding...' : 'Add card set'}
           </Button>
         </form>
       </div>

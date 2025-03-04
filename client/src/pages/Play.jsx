@@ -47,7 +47,9 @@ const Play = () => {
 
     // Move to next card
     if (currentCardIndex < cards.length - 1) {
-      setCurrentCardIndex(currentCardIndex + 1)
+      setTimeout(() => {
+        setCurrentCardIndex(currentCardIndex + 1)
+      }, 200)
       setIsFlipped(false) // Reset flip state for new card
     } else {
       setGameFinished(true)
@@ -170,7 +172,8 @@ const Play = () => {
               transform: 'rotateY(180deg)'
             }}
           >
-            <div className="flex-1 flex items-center justify-center">
+
+            <div>
               <h3 className="text-xl text-center">{currentCard.answer}</h3>
             </div>
             <div className="flex justify-center space-x-4">

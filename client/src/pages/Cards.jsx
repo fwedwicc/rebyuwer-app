@@ -99,16 +99,16 @@ const Cards = () => {
     } catch (err) {
       toast.error(err.response.data.message, {
         style: {
-          border: "1px solid rgba(229, 231, 235, 0.8)", // border-neutral-200/80
-          boxShadow: "0px 4px 6px rgba(229, 231, 235, 0.3)", // shadow-md shadow-neutral-200/30
+          border: "1px solid #262626",
+          background: "rgba(12, 10, 9)",
           borderRadius: "2rem",
           padding: '10px',
-          paddingY: '20px',
-          color: '#ef4444',
+          paddingLeft: '13px',
+          color: '#fb7185',
         },
         iconTheme: {
-          primary: '#ef4444',
-          secondary: '#fff',
+          primary: '#fb7185',
+          secondary: '#0c0a09',
         },
       })
     } finally {
