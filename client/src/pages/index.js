@@ -4,12 +4,16 @@ import Home from './Home'
 import Admin from './Admin'
 import Cards from './Cards'
 import Play from './Play'
+import Settings from './Settings'
+import NoPage from './NoPage'
 
 export {
   Register,
   Login,
   Home,
-  Admin,
   Cards,
-  Play
+  Play,
+  Admin,
+  Settings,
+  NoPage,
 }
