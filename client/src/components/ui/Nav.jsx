@@ -121,7 +121,7 @@ const Nav = () => {
             className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}
           />
         )}
-        <span className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 md:text-base text-sm backdrop-blur-3xl gap-3 px-4 py-2.5 ${location.pathname === '/' ? '' : 'border border-stone-800'}`}>
+        <span className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 md:text-base text-sm backdrop-blur-3xl gap-3 px-4 py-3 ${location.pathname === '/' ? '' : 'border border-stone-800'}`}>
           Home
         </span>
       </Link>
@@ -147,7 +147,7 @@ const Nav = () => {
                 className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}
               />
               <span className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 md:text-base text-sm backdrop-blur-3xl gap-1 pl-3 pr-4 py-1`}>
-                <span className='h-9 flex justify-center items-center rounded-full'>
+                <span className='h-[38px] flex justify-center items-center rounded-full'>
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
                     <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
                   </svg>
@@ -180,7 +180,7 @@ const Nav = () => {
               className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}
             />
             <span
-              className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 backdrop-blur-3xl gap-3 px-4 py-2.5`}
+              className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 backdrop-blur-3xl gap-3 px-4 py-3`}
             >
               {cardSetNameLoading ? <Spinner mode='light' /> : <span className='truncate md:max-w-[8rem] max-w-[6rem] md:text-base text-sm'>{cardSetName}</span>}
             </span>
