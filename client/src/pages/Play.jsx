@@ -149,53 +149,75 @@ const Play = () => {
   return (
     <>
       {loading ?
-        <div className='h-screen flex justify-center items-center'>
+        <div className='h-screen flex justify-center items-end'>
           <Spinner mode='light' />
         </div>
         : (
           <motion.div
-            className=''
+            className='h-screen flex flex-col justify-center items-center relative md:p-0 p-4'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
           >
             <Toaster position="top-center" />
+            {/*  */}
+            <div className="md:px-24 px-4 absolute flex justify-between items-center top-0 text-center w-full pt-24">
+              {/* Progress Bar */}
+              <div className="absolute w-full h-[2px] top-0 left-0">
+                <div
+                  className="h-full transition-all duration-300 rounded-r-full bg-gradient-to-r from-violet-200 via-violet-400 to-indigo-600 bg-[length:150%_150%] animate-gradientMove"
+                  style={{ width: `${((currentCardIndex + 1) / cards.length) * 100}%` }}
+                />
+              </div>
+              {/* <h2>{currentCardIndex + 1} of {cards.length}</h2> */}
+              <h2>Your score: <span className='text-indigo-400'>{score}</span></h2>
+              {/* Game control buttons and shuffle toggle */}
+              <div className="flex flex-wrap justify-center gap-3 border border-yellow-500">
+                <button
+                  onClick={resetGame}
+                  className="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
+                >
+                  Reset
+                </button>
 
-            <div className="mb-4 text-center">
-              <h2 className="text-xl font-bold">Card {currentCardIndex + 1} of {cards.length}</h2>
-              <p className="text-gray-600">Score: {score}</p>
+                <div className="flex items-center">
+                  <label htmlFor="shuffle-toggle" className="flex items-center cursor-pointer">
+                    <div className="relative">
+                      <input
+                        id="shuffle-toggle"
+                        type="checkbox"
+                        className="sr-only"
+                        checked={isShuffled}
+                        onChange={toggleShuffleMode}
+                      />
+                      <div className="block bg-gray-300 w-14 h-8 rounded-full"></div>
+                      <div className={`absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${isShuffled ? 'transform translate-x-6' : ''}`}></div>
+                    </div>
+                  </label>
+                </div>
+              </div>
             </div>
-
-            <div
-              className="relative w-full max-w-md h-64 perspective"
-              style={{ perspective: '1000px' }}
-            >
+            {/* Main Card Container */}
+            <div className="relative w-full max-w-md h-[70%] perspective mt-18" style={{ perspective: '1000px' }}>
               <div
-                className={`w-full h-full transition-transform duration-500 transform-style-preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}
+                className={`w-full h-full transition-all duration-500 border-2 outline outline-offset-4 outline-stone-800 ${isFlipped ? 'border-indigo-400 shadow-2xl shadow-indigo-500/20' : 'border-violet-400/10'} rounded-3xl transform-style-preserve-3d ${isFlipped ? 'rotate-y-180' : ''}`}
                 style={{
                   transformStyle: 'preserve-3d',
                   transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
                 }}
               >
                 {/* Front of card (Question) */}
-                <div
-                  className="absolute w-full h-full rounded-xl shadow-lg p-6 flex flex-col justify-between backface-hidden"
-                  style={{ backfaceVisibility: 'hidden' }}
-                >
-                  <div className="flex-1 flex items-center justify-center">
-                    <h3 className="text-xl text-center">{currentCard.question}</h3>
+                <div className="absolute w-full h-full rounded-xl shadow-lg p-4 flex flex-col justify-between gap-4 backface-hidden" style={{ backfaceVisibility: 'hidden' }}>
+                  <div className='flex justify-start items-start overflow-auto p-4'>
+                    <p className="text-lg text-center leading-6">{currentCard.question}</p>
                   </div>
                   <div className="text-center">
-                    <button
-                      onClick={handleFlip}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                    >
-                      Reveal Answer
+                    <button onClick={handleFlip} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                      Reveal
                     </button>
                   </div>
                 </div>
-
                 {/* Back of card (Answer) */}
                 <div
                   className="absolute w-full h-full rounded-xl shadow-lg p-6 flex flex-col justify-between backface-hidden rotate-y-180"
@@ -204,9 +226,8 @@ const Play = () => {
                     transform: 'rotateY(180deg)'
                   }}
                 >
-
-                  <div>
-                    <h3 className="text-xl text-center">{currentCard.answer}</h3>
+                  <div className='flex justify-start items-start overflow-auto p-4'>
+                    <p className="text-lg text-center leading-6">{currentCard.answer}</p>
                   </div>
                   <div className="flex justify-center space-x-4">
                     <button
@@ -223,35 +244,6 @@ const Play = () => {
                     </button>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            {/* Game control buttons and shuffle toggle */}
-            <div className="flex flex-wrap justify-center gap-3 mt-6">
-              <button
-                onClick={resetGame}
-                className="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
-              >
-                Reset
-              </button>
-
-              <div className="flex items-center">
-                <label htmlFor="shuffle-toggle" className="flex items-center cursor-pointer">
-                  <div className="relative">
-                    <input
-                      id="shuffle-toggle"
-                      type="checkbox"
-                      className="sr-only"
-                      checked={isShuffled}
-                      onChange={toggleShuffleMode}
-                    />
-                    <div className="block bg-gray-300 w-14 h-8 rounded-full"></div>
-                    <div className={`absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${isShuffled ? 'transform translate-x-6' : ''}`}></div>
-                  </div>
-                  <div className="ml-3 text-gray-700 font-medium">
-                    {isShuffled ? 'Shuffled' : 'Original Order'}
-                  </div>
-                </label>
               </div>
             </div>
           </motion.div>

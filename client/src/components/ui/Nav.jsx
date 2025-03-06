@@ -182,7 +182,7 @@ const Nav = () => {
             <span
               className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 backdrop-blur-3xl gap-3 px-4 py-3`}
             >
-              {cardSetNameLoading ? <Spinner mode='light' /> : <span className='truncate md:max-w-[8rem] max-w-[6rem] md:text-base text-sm'>{cardSetName}</span>}
+              {cardSetNameLoading ? <Spinner mode='light' /> : <span className='truncate md:max-w-[8rem] max-w-[4.5rem] md:text-base text-sm'>{cardSetName}</span>}
             </span>
           </motion.div>
         )}
@@ -197,7 +197,7 @@ const Nav = () => {
             {user?.username?.charAt(0).toUpperCase() || 'U'}
             <span className='size-2 rounded-full absolute bottom-0 bg-stone-400 blur-sm' />
           </span>
-          <span className='text-stone-200 md:text-base text-sm'>{user?.username || 'you'}</span>
+          <span className='text-stone-200 md:text-base text-sm truncate md:max-w-full max-w-[3.2rem]'>{user?.username || 'you'}</span>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`text-stone-600 size-4 transform transition-transform duration-300 ease-in-out ${isDropdownOpen ? 'rotate-180' : ''}`}>
             <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
           </svg>
