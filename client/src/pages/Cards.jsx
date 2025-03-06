@@ -20,7 +20,7 @@ const Cards = () => {
   // Loader
   useEffect(() => {
     const timer = setTimeout(() => {
-      setLoading(false);
+      setLoading(false)
     }, 2000)
 
     return () => clearTimeout(timer)
@@ -69,6 +69,18 @@ const Cards = () => {
 
   // Handle Input Change for New Card
   const handleNewCardChange = (e) => {
+    const { name, value } = e.target
+
+    // Detect Enter key press and auto-format list
+    if (e.nativeEvent.inputType === "insertLineBreak") {
+      const lines = value.split("\n")
+      const lastLine = lines[lines.length - 2] // Get the previous line
+
+      if (lastLine && lastLine.trim().startsWith("-")) {
+        e.target.value = value + "- " // Insert '- ' for the new line
+      }
+    }
+
     setNewCard({
       ...newCard,
       [e.target.name]: e.target.value
@@ -134,6 +146,26 @@ const Cards = () => {
     }
   }
 
+  const formatTextAsList = (text) => {
+    const lines = text.split("\n") // Split by new lines
+
+    // Check if any line starts with "-"
+    const isList = lines.every(line => line.trim().startsWith("-"))
+
+    if (isList) {
+      return (
+        <ul className="list-disc pl-4">
+          {lines.map((line, index) => (
+            <li key={index}>{line.replace(/^- /, "").trim()}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    return <p>{text}</p> // Default if not a list
+  }
+
+
   return (
     <>
       {loading ?
@@ -150,31 +182,6 @@ const Cards = () => {
             className='md:pt-36 pt-28 md:px-48 px-4 md:pb-28 pb-4'
           >
             <Toaster position="top-right" />
-            {/* Play Button */}
-            {/* <div className='fixed z-50 bg-stone-950/70 overflow-hidden backdrop-blur-sm rounded-full size-13 md:bottom-12 bottom-6 md:right-12 right-6'>
-              {cards.length === 0 ? (
-                // Dummy disabled button when the card set has no cards
-                <button
-                  className="group rounded-full size-13 flex items-center justify-center leading-none border-t bg-indigo-900/5 border-indigo-700 transition-all duration-300 ease-in-out cursor-not-allowed overflow-hidden opacity-50"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-7 text-indigo-400">
-                    <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
-                  </svg>
-                  <span className='size-2 rounded-full absolute bottom-0 bg-indigo-700 blur-sm' />
-                </button>
-              ) : (
-                // Actual button itey
-                <Link
-                  to={`/play/${id}`}
-                  className="group rounded-full size-13 flex items-center justify-center leading-none border-t bg-indigo-900/5 border-indigo-700 transition-all duration-300 ease-in-out cursor-pointer overflow-hidden"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-7 transition-all duration-300 ease-in-out text-indigo-400 group-hover:size-7">
-                    <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
-                  </svg>
-                  <span className='size-2 rounded-full absolute bottom-0 bg-indigo-700 transition-all duration-300 ease-in-out blur-sm' />
-                </Link>
-              )}
-            </div> */}
             {/* Cards List */}
             {cards.length > 0 && <div className='md:text-base text-sm mb-4'><span className='text-stone-100'>{cards.length} card/s</span>  available—keep building your deck!</div>}
             {Array.isArray(cards) && cards.length > 0 ? (
@@ -198,11 +205,11 @@ const Cards = () => {
                   >
                     <div>
                       <p className='pb-2 pl-3 leading-none text-stone-400 text-xs'>Front</p>
-                      <div className='border border-stone-900 px-3 py-2 rounded-xl md:text-base text-sm'>{card.question}</div>
+                      <div className='border border-stone-900 px-3 py-2 rounded-xl md:text-base text-sm'>{formatTextAsList(card.question)}</div>
                     </div>
                     <div>
                       <p className='pb-2 pl-3 leading-none text-stone-400 text-xs'>Back</p>
-                      <div className='border border-stone-900 px-3 py-2 rounded-xl md:text-base text-sm'>{card.answer}</div>
+                      <div className='border border-stone-900 px-3 py-2 rounded-xl md:text-base text-sm'>{formatTextAsList(card.answer)}</div>
                     </div>
                     <div className='col-span-full flex justify-end gap-2'>
                       <button
@@ -215,7 +222,7 @@ const Cards = () => {
                       </button>
                       <button
                         onClick={() => handleDeleteCard(card._id)}
-                        className={`${cardDeleteLoading[card._id] ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'} flex items-center md:text-base text-sm gap-1.5 rounded-xl px-3 py-2 bg-rose-500/10 hover:bg-rose-500/20 transition-all duration-300 ease-in-out`}
+                        className={`${cardDeleteLoading[card._id] ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'} flex items-center md:text-base text-sm gap-1.5 rounded-xl px-3 py-2 bg-rose-700/20 hover:bg-rose-700/30 transition-all duration-300 ease-in-out`}
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300">
                           <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
@@ -251,7 +258,6 @@ const Cards = () => {
             )}
 
             {/* Add Card Button */}
-
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -296,24 +302,32 @@ const Cards = () => {
                 >
                   <div>
                     <p className='pb-2 pl-3 leading-none text-stone-400 text-xs'>Front</p>
-                    <input
-                      type="text"
+                    <textarea
                       name="question"
                       placeholder="Question"
                       value={newCard.question}
                       onChange={handleNewCardChange}
-                      className='rounded-md px-3 py-1.5 border'
+                      onInput={(e) => {
+                        e.target.style.height = "auto"
+                        e.target.style.height = `${e.target.scrollHeight}px`
+                      }}
+                      className='rounded-xl border-stone-900 bg-stone-900/20 px-3 py-2 border w-full md:text-base text-sm transition duration-300 ease-in-out focus:ring focus:outline-none focus:ring-indigo-400 resize-none overflow-hidden'
+                      rows={2}
                     />
                   </div>
                   <div>
                     <p className='pb-2 pl-3 leading-none text-stone-400 text-xs'>Back</p>
-                    <input
-                      type="text"
+                    <textarea
                       name="answer"
                       placeholder="Answer"
                       value={newCard.answer}
                       onChange={handleNewCardChange}
-                      className='rounded-md px-3 py-1.5 border'
+                      onInput={(e) => {
+                        e.target.style.height = "auto"
+                        e.target.style.height = `${e.target.scrollHeight}px`
+                      }}
+                      className='rounded-xl border-stone-900 bg-stone-900/20 px-3 py-2 border w-full md:text-base text-sm transition duration-300 ease-in-out focus:ring focus:outline-none focus:ring-indigo-400 resize-none overflow-hidden'
+                      rows={2}
                     />
                   </div>
                   <div className='col-span-full flex justify-end gap-2'>
@@ -326,7 +340,7 @@ const Cards = () => {
                     <button
                       onClick={handleCardSubmit}
                       disabled={cardLoading}
-                      className={`${cardLoading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'} flex items-center md:text-base text-sm gap-1.5 rounded-xl px-3 py-2 bg-indigo-500/10 hover:bg-indigo-500/20 transition-all duration-300 ease-in-out`}
+                      className={`${cardLoading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'} flex items-center md:text-base text-sm gap-1.5 rounded-xl px-3 py-2 bg-indigo-700/20 hover:bg-indigo-700/30 transition-all duration-300 ease-in-out`}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />

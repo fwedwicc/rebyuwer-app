@@ -112,7 +112,7 @@ const Nav = () => {
         ease: "easeInOut",
         scale: { type: "spring", visualDuration: 0.4, bounce: 0.2 },
       }}
-      className='fixed z-50 mt-4 transform -translate-x-1/2 left-1/2 inline-flex gap-1 border border-stone-900 bg-stone-900/30 backdrop-blur-md p-1 rounded-full'
+      className='fixed z-50 mt-4 transform -translate-x-1/2 left-1/2 inline-flex items-center gap-1 border border-stone-900 bg-stone-900/30 backdrop-blur-md py-1 px-[5px] rounded-full'
     >
       {/* Home */}
       <Link to='/' className={`relative overflow-hidden flex items-center justify-center p-[1px] rounded-full ${location.pathname === '/' && 'shadow-xl shadow-indigo-600/20'}`}>
@@ -121,7 +121,7 @@ const Nav = () => {
             className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}
           />
         )}
-        <span className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 md:text-base text-sm backdrop-blur-3xl gap-3 px-4 py-1 ${location.pathname === '/' ? '' : 'border border-stone-800'}`}>
+        <span className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 md:text-base text-sm backdrop-blur-3xl gap-3 px-4 py-2.5 ${location.pathname === '/' ? '' : 'border border-stone-800'}`}>
           Home
         </span>
       </Link>
@@ -180,7 +180,7 @@ const Nav = () => {
               className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}
             />
             <span
-              className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 backdrop-blur-3xl gap-3 px-4 py-1`}
+              className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 backdrop-blur-3xl gap-3 px-4 py-2.5`}
             >
               {cardSetNameLoading ? <Spinner mode='light' /> : <span className='truncate md:max-w-[8rem] max-w-[6rem] md:text-base text-sm'>{cardSetName}</span>}
             </span>
@@ -193,7 +193,7 @@ const Nav = () => {
           className='flex items-center gap-2 border border-stone-800 bg-stone-950 pl-1 pr-3 py-1 rounded-full text-sm cursor-pointer'
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
-          <span className='relative rounded-full size-9 flex items-center justify-center leading-none border-t border-stone-500 bg-stone-900/50 overflow-hidden'>
+          <span className='relative rounded-full size-[2.50rem] flex items-center justify-center leading-none border-t border-stone-500 bg-stone-900/50 overflow-hidden'>
             {user?.username?.charAt(0).toUpperCase() || 'U'}
             <span className='size-2 rounded-full absolute bottom-0 bg-stone-400 blur-sm' />
           </span>
