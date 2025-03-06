@@ -3,7 +3,7 @@ import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
 import toast, { Toaster } from 'react-hot-toast'
 import Swal from 'sweetalert2'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import api from '../utils/api'
 
 const Play = () => {
@@ -99,7 +99,10 @@ const Play = () => {
   }
 
   if (cards.length === 0) {
-    return <div className="flex justify-center items-center h-screen">Loading flashcards...</div>
+    return <div className="flex flex-col justify-center items-center text-center h-screen">
+      Your set are empty, maybe create some cards first :)
+      <Link to={`/card-set/${id}`} className='text-indig-400 underline'>Go to set</Link>
+    </div>
   }
 
   if (gameFinished) {

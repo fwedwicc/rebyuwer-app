@@ -94,6 +94,10 @@ const Nav = () => {
     }
   }, [])
 
+  // Extract the `id` from the pathname using regex or split method
+  const match = location.pathname.match(/card-set\/([^/]+)/);
+  const cardSetId = match ? match[1] : null; // Get the ID if it exists
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0 }}
@@ -111,7 +115,7 @@ const Nav = () => {
       className='fixed z-50 mt-4 transform -translate-x-1/2 left-1/2 inline-flex gap-1 border border-stone-900 bg-stone-900/30 backdrop-blur-md p-1 rounded-full'
     >
       {/* Home */}
-      <Link to='/' className='relative overflow-hidden flex items-center justify-center p-[1px] rounded-full'>
+      <Link to='/' className={`relative overflow-hidden flex items-center justify-center p-[1px] rounded-full ${location.pathname === '/' && 'shadow-xl shadow-indigo-600/20'}`}>
         {location.pathname === '/' && (
           <span
             className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}
@@ -121,9 +125,9 @@ const Nav = () => {
           Home
         </span>
       </Link>
-      {/* Card Set name */}
+      {/* Card Set name: PLAY BUTTON */}
       <AnimatePresence initial={false}>
-        {(location.pathname.includes('card-set') || location.pathname.includes('play')) && (
+        {location.pathname.includes('card-set') && (
           <motion.div
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -136,7 +140,41 @@ const Nav = () => {
               duration: 0.2,
               scale: { type: "spring", visualDuration: 0.4, bounce: 0.2 },
             }}
-            className='relative overflow-hidden flex items-center justify-center p-[1px] rounded-full'
+            className='relative overflow-hidden flex items-center justify-center p-[1px] rounded-full shadow-xl shadow-indigo-600/20'
+          >
+            <Link to={cardSetId ? `/play/${cardSetId}` : "#"} className={`relative overflow-hidden flex items-center justify-center p-[1px] rounded-full shadow-xl shadow-indigo-600/20`}>
+              <span
+                className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}
+              />
+              <span className={`inline-flex h-full w-full items-center justify-center transition duration-300 ease-in-out rounded-full bg-stone-950 text-stone-200 md:text-base text-sm backdrop-blur-3xl gap-1 pl-3 pr-4 py-1`}>
+                <span className='h-9 flex justify-center items-center rounded-full'>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5">
+                    <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
+                  </svg>
+                </span>
+                Play
+              </span>
+            </Link>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {/* Card Set name */}
+      <AnimatePresence initial={false}>
+        {location.pathname.includes('play') && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{
+              opacity: 0,
+              scale: 0,
+              transition: { duration: 0.3 },
+            }}
+            transition={{
+              duration: 0.2,
+              delay: 0.4,
+              scale: { type: "spring", visualDuration: 0.4, bounce: 0.2 },
+            }}
+            className='relative overflow-hidden flex items-center justify-center p-[1px] rounded-full shadow-xl shadow-indigo-600/20'
           >
             <span
               className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}

@@ -151,7 +151,7 @@ const Cards = () => {
           >
             <Toaster position="top-right" />
             {/* Play Button */}
-            <div className='fixed z-50 bg-stone-950/70 overflow-hidden backdrop-blur-sm rounded-full size-13 md:bottom-12 bottom-6 md:right-12 right-6'>
+            {/* <div className='fixed z-50 bg-stone-950/70 overflow-hidden backdrop-blur-sm rounded-full size-13 md:bottom-12 bottom-6 md:right-12 right-6'>
               {cards.length === 0 ? (
                 // Dummy disabled button when the card set has no cards
                 <button
@@ -174,7 +174,7 @@ const Cards = () => {
                   <span className='size-2 rounded-full absolute bottom-0 bg-indigo-700 transition-all duration-300 ease-in-out blur-sm' />
                 </Link>
               )}
-            </div>
+            </div> */}
             {/* Cards List */}
             {cards.length > 0 && <div className='md:text-base text-sm mb-4'><span className='text-stone-100'>{cards.length} card/s</span>  available—keep building your deck!</div>}
             {Array.isArray(cards) && cards.length > 0 ? (
