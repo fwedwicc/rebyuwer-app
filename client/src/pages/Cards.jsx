@@ -84,6 +84,11 @@ const Cards = () => {
     setIsAddingCard(true)
   }
 
+  const closeNewCard = () => {
+    setNewCard(null)
+    setIsAddingCard(false)
+  }
+
   // Handle Card Submission
   const handleCardSubmit = async (e) => {
     e.preventDefault()
@@ -246,21 +251,36 @@ const Cards = () => {
             )}
 
             {/* Add Card Button */}
-            <button
-              onClick={handleAddNewCard}
-              className="flex flex-col gap-1 justify-center items-center py-4 w-full rounded-3xl bg-stone-900/30 hover:bg-stone-900/40 transition duration-300 ease-in-out cursor-pointer mb-3"
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{
+                opacity: 0,
+                scale: 0.5,
+                transition: { duration: 0.2 },
+              }}
+              transition={{
+                duration: 0.2,
+                scale: { type: "spring", visualDuration: 0.2, bounce: 0.2 },
+              }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="text-stone-300 size-7">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-              Add Card
-            </button>
+              <button
+                onClick={handleAddNewCard}
+                className={`${isAddingCard ? 'hidden' : 'flex'} flex-col gap-1 justify-center items-center py-4 w-full rounded-3xl bg-stone-900/30 hover:bg-stone-900/40 transition duration-300 ease-in-out cursor-pointer mb-3`}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="text-stone-300 size-7">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                Add Card
+              </button>
+            </motion.div>
 
             {/* New Card Input Fields */}
             <AnimatePresence initial={false}>
               {newCard && (
                 <motion.div
-                  className='border p-2  flex flex-col w-full'
+                  className={`border-l border-t border-stone-800/50 bg-stone-900/20 p-2 grid md:grid-cols-2 grid-cols-1 gap-2 rounded-3xl`}
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{
@@ -274,36 +294,46 @@ const Cards = () => {
                   }}
                   layout
                 >
-                  <input
-                    type="text"
-                    name="question"
-                    placeholder="Question"
-                    value={newCard.question}
-                    onChange={handleNewCardChange}
-                    className='rounded-md px-3 py-1.5 border'
-                  />
-                  <input
-                    type="text"
-                    name="answer"
-                    placeholder="Answer"
-                    value={newCard.answer}
-                    onChange={handleNewCardChange}
-                    className='rounded-md px-3 py-1.5 border'
-                  />
-
-                  <button
-                    onClick={handleCardSubmit}
-                    className='rounded-md px-3 py-1.5 border'
-                    disabled={cardLoading}
-                  >
-                    {cardLoading ? 'Saving...' : 'Save Card'}
-                  </button>
-                  <button
-                    onClick={() => setNewCard(null)}
-                    className='rounded-md px-3 py-1.5 border'
-                  >
-                    Cancel
-                  </button>
+                  <div>
+                    <p className='pb-2 pl-3 leading-none text-stone-400 text-xs'>Front</p>
+                    <input
+                      type="text"
+                      name="question"
+                      placeholder="Question"
+                      value={newCard.question}
+                      onChange={handleNewCardChange}
+                      className='rounded-md px-3 py-1.5 border'
+                    />
+                  </div>
+                  <div>
+                    <p className='pb-2 pl-3 leading-none text-stone-400 text-xs'>Back</p>
+                    <input
+                      type="text"
+                      name="answer"
+                      placeholder="Answer"
+                      value={newCard.answer}
+                      onChange={handleNewCardChange}
+                      className='rounded-md px-3 py-1.5 border'
+                    />
+                  </div>
+                  <div className='col-span-full flex justify-end gap-2'>
+                    <button
+                      onClick={closeNewCard}
+                      className="flex items-center md:text-base text-sm gap-1.5 rounded-xl px-3 py-2 bg-stone-900/50 hover:bg-stone-900/70 transition-all duration-300 ease-in-out cursor-pointer"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleCardSubmit}
+                      disabled={cardLoading}
+                      className={`${cardLoading ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'} flex items-center md:text-base text-sm gap-1.5 rounded-xl px-3 py-2 bg-indigo-500/10 hover:bg-indigo-500/20 transition-all duration-300 ease-in-out`}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                      {cardLoading ? 'Saving...' : 'Save'}
+                    </button>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
