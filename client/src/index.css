@@ -61,6 +61,11 @@ body::-webkit-scrollbar-thumb {
 
 /* -------- Sweet Alert Error --------- */
 /* Popup container */
+.swal-popup-lg {
+  @apply rounded-3xl w-full max-w-4xl bg-stone-950 border border-stone-800/60 text-stone-400 md:text-base text-sm;
+}
+
+/* Popup container */
 .swal-popup {
   @apply rounded-3xl w-full max-w-sm bg-stone-950 border border-stone-800/60 text-stone-400 md:text-base text-sm;
 }

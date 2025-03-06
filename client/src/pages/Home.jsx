@@ -26,7 +26,7 @@ const Home = () => {
 
     try {
       await api.post('/cardSet', cardSetFormData)
-      toast.success('Card set added!', {
+      toast.success('Card set added :)', {
         style: {
           border: "1px solid #262626",
           background: "rgba(12, 10, 9)",
@@ -47,7 +47,7 @@ const Home = () => {
       const response = await api.get('/cardSet')
       setCardSets(response.data)
     } catch (err) {
-      toast.error(err.response.data.message, {
+      toast.error(err.response.data.message + ' :(', {
         style: {
           border: "1px solid #262626",
           background: "rgba(12, 10, 9)",
@@ -116,7 +116,7 @@ const Home = () => {
           name: formValues.name
         }
 
-        const response = await api.put(`/cardSet/${set._id}`, updateFormData)
+        await api.put(`/cardSet/${set._id}`, updateFormData)
 
         // Update Card Set state with the updated Card Set
         setCardSets((prevSets) =>
@@ -125,7 +125,7 @@ const Home = () => {
           )
         );
 
-        toast.success('Card set updated!', {
+        toast.success('Card set updated :)', {
           style: {
             border: "1px solid #262626",
             background: "rgba(12, 10, 9)",
@@ -140,8 +140,20 @@ const Home = () => {
           },
         })
       } catch (error) {
-        console.error("Error updating Card Set:", error)
-        toast.error('Failed to update Card Set')
+        toast.error('Failed to update :(', {
+          style: {
+            border: "1px solid #262626",
+            background: "rgba(12, 10, 9)",
+            borderRadius: "2rem",
+            padding: '10px',
+            paddingLeft: '13px',
+            color: '#fb7185',
+          },
+          iconTheme: {
+            primary: '#fb7185',
+            secondary: '#0c0a09',
+          },
+        })
       }
     }
   }
@@ -169,7 +181,7 @@ const Home = () => {
           try {
             await api.delete(`/cardSet/${id}`)
             setCardSets((prevCardSets) => prevCardSets.filter((set) => set._id !== id))
-            toast.success('Card set deleted!', {
+            toast.success('Card set deleted :)', {
               style: {
                 border: "1px solid #262626",
                 background: "rgba(12, 10, 9)",
@@ -184,8 +196,7 @@ const Home = () => {
               },
             })
           } catch (error) {
-            console.error("Error deleting card set:", error)
-            toast.error(error, {
+            toast.error(error + ' :(', {
               style: {
                 border: "1px solid #262626",
                 background: "rgba(12, 10, 9)",

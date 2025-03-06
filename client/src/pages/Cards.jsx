@@ -3,6 +3,7 @@ import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
 import { Spinner } from '../components/ui'
 import toast, { Toaster } from 'react-hot-toast'
+import Swal from 'sweetalert2'
 import { Link, useParams } from 'react-router-dom'
 import api from '../utils/api'
 
@@ -114,7 +115,7 @@ const Cards = () => {
       const response = await api.get(`/card/${id}`)
       setCards(response.data.data)
     } catch (err) {
-      toast.error(err.response.data.message, {
+      toast.error(err.response.data.message + ' :(', {
         style: {
           border: "1px solid #262626",
           background: "rgba(12, 10, 9)",
@@ -130,6 +131,104 @@ const Cards = () => {
       })
     } finally {
       setCardLoading(false)
+    }
+  }
+
+
+  // Handle Edit Card Sets
+  const handleEdit = async (card) => {
+    const { value: formValues } = await Swal.fire({
+      title: 'Edit Card',
+      html: `
+        <div class="space-y-4 text-left grid md:grid-cols-2 grid-cols-1 gap-2">
+          <div>
+            <label class="block text-sm font-medium text-stone-300">Front</label>
+            <textarea
+              id="swal-question"
+              class="mt-1 block w-full py-2 px-3 border rounded-xl text-stone-300 transition-all duration-300 ease-in-out focus:outline-none focus:ring focus:ring-indigo-400 border-stone-800 resize-none overflow-hidden"
+              rows="2"
+              oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
+            >${card.question || ''}</textarea>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-stone-300">Back</label>
+            <textarea
+              id="swal-answer"
+              class="mt-1 block w-full py-2 px-3 border rounded-xl text-stone-300 transition-all duration-300 ease-in-out focus:outline-none focus:ring focus:ring-indigo-400 border-stone-800 resize-none overflow-hidden"
+              rows="2"
+              oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px';"
+            >${card.answer || ''}</textarea>
+          </div>
+        </div>
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Update',
+      customClass: {
+        title: "swal-title",
+        text: "swal-text",
+        popup: "swal-popup-lg",
+        confirmButton: "swal-confirm-confirm",
+        cancelButton: "swal-cancel",
+      },
+      didOpen: () => {
+        // Attach event listener after Swal has been rendered
+        document.getElementById("swal-question").addEventListener("change", handleNewCardChange);
+        document.getElementById("swal-answer").addEventListener("change", handleNewCardChange);
+      },
+      preConfirm: () => {
+        return {
+          question: document.getElementById('swal-question').value,
+          answer: document.getElementById('swal-answer').value
+        }
+      }
+    })
+
+    if (formValues) {
+      try {
+        const updateFormData = {
+          question: formValues.question,
+          answer: formValues.answer
+        }
+
+        await api.put(`/card/${id}/${card._id}`, updateFormData)
+
+        // Update Cards state with the updated Cards
+        setCards((prevCards) =>
+          prevCards.map((item) =>
+            item._id === card._id ? { ...item, question: formValues.question, answer: formValues.answer } : item
+          )
+        );
+
+        toast.success('Card updated :)', {
+          style: {
+            border: "1px solid #262626",
+            background: "rgba(12, 10, 9)",
+            borderRadius: "2rem",
+            padding: '10px',
+            paddingLeft: '13px',
+            color: '#34d399',
+          },
+          iconTheme: {
+            primary: '#34d399',
+            secondary: '#0c0a09',
+          },
+        })
+      } catch (error) {
+        toast.error('Failed to update :(', {
+          style: {
+            border: "1px solid #262626",
+            background: "rgba(12, 10, 9)",
+            borderRadius: "2rem",
+            padding: '10px',
+            paddingLeft: '13px',
+            color: '#fb7185',
+          },
+          iconTheme: {
+            primary: '#fb7185',
+            secondary: '#0c0a09',
+          },
+        })
+      }
     }
   }
 
@@ -213,6 +312,7 @@ const Cards = () => {
                     </div>
                     <div className='col-span-full flex justify-end gap-2'>
                       <button
+                        onClick={() => handleEdit(card)}
                         className="flex items-center md:text-base text-sm gap-1.5 rounded-xl px-3 py-2 bg-stone-900/50 hover:bg-stone-900/70 transition-all duration-300 ease-in-out cursor-pointer"
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-5 text-stone-300">
@@ -311,7 +411,7 @@ const Cards = () => {
                         e.target.style.height = "auto"
                         e.target.style.height = `${e.target.scrollHeight}px`
                       }}
-                      className='rounded-xl border-stone-900 bg-stone-900/20 px-3 py-2 border w-full md:text-base text-sm transition duration-300 ease-in-out focus:ring focus:outline-none focus:ring-indigo-400 resize-none overflow-hidden'
+                      className='rounded-xl border-stone-900 px-3 py-2 border w-full md:text-base text-sm transition duration-300 ease-in-out focus:ring focus:outline-none focus:ring-indigo-400 resize-none overflow-hidden'
                       rows={2}
                     />
                   </div>
@@ -326,7 +426,7 @@ const Cards = () => {
                         e.target.style.height = "auto"
                         e.target.style.height = `${e.target.scrollHeight}px`
                       }}
-                      className='rounded-xl border-stone-900 bg-stone-900/20 px-3 py-2 border w-full md:text-base text-sm transition duration-300 ease-in-out focus:ring focus:outline-none focus:ring-indigo-400 resize-none overflow-hidden'
+                      className='rounded-xl border-stone-900 px-3 py-2 border w-full md:text-base text-sm transition duration-300 ease-in-out focus:ring focus:outline-none focus:ring-indigo-400 resize-none overflow-hidden'
                       rows={2}
                     />
                   </div>
