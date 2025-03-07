@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import * as motion from "motion/react-client"
 import { AnimatePresence } from "motion/react"
-import { Spinner } from '../components/ui'
+import { Spinner, Button } from '../components/ui'
 import toast, { Toaster } from 'react-hot-toast'
 import Swal from 'sweetalert2'
 import { useParams, Link } from 'react-router-dom'
@@ -17,6 +17,7 @@ const Play = () => {
   const [isShuffled, setIsShuffled] = useState(false)
   const [loading, setLoading] = useState(true)
   const { id } = useParams() // Get card set ID from URL
+  const [percentage, setPercentage] = useState(0)
 
   // Loader
   useEffect(() => {
@@ -89,7 +90,10 @@ const Play = () => {
       }, 200)
       setIsFlipped(false) // Reset flip state for new card
     } else {
-      setGameFinished(true)
+      setTimeout(() => {
+        setGameFinished(true)
+      }, 500)
+
     }
   }
 
@@ -155,7 +159,7 @@ const Play = () => {
         confirmButton: "swal-confirm-danger",
         cancelButton: "swal-cancel",
       },
-    });
+    })
 
     if (!result.isConfirmed) {
       // If the user cancels, revert the checkbox state
@@ -196,40 +200,102 @@ const Play = () => {
     })
   }
 
+  // Progress Component
+  const CircularProgress = ({ percentage }) => {
+    const radius = 40
+    const strokeWidth = 2
+    const circumference = 2 * Math.PI * radius // Full circumference
+    const progress = (percentage / 100) * circumference // Progress calculation
+
+    return (
+      <svg width="150" height="150" viewBox="0 0 100 100" className="mx-auto">
+        {/* Background Circle */}
+        <circle
+          cx="50"
+          cy="50"
+          r={radius}
+          fill="none"
+          stroke="#1c1917"
+          strokeWidth={strokeWidth}
+        />
+        {/* Progress Circle */}
+        <circle
+          cx="50"
+          cy="50"
+          r={radius}
+          fill="none"
+          stroke="rgb(99, 102, 241)" // Indigo-400
+          strokeWidth={strokeWidth}
+          strokeDasharray={circumference}
+          strokeDashoffset={circumference - progress}
+          strokeLinecap="round"
+          transform="rotate(-90 50 50)"
+        />
+        {/* Percentage Text */}
+        <text x="50" y="60" textAnchor="middle" fontSize="23" fill="white">
+          {percentage}%
+        </text>
+      </svg>
+    )
+  }
+
+  useEffect(() => {
+    const calculatedPercentage = Math.round((score / cards.length) * 100)
+    setPercentage(calculatedPercentage)
+  }, [score, cards])
+
 
   // DISPLAY: If no cards in the set
   if (cards.length === 0) {
     return <motion.div
-      className='flex flex-col justify-center items-center text-center h-screen'
+      className='flex flex-col justify-center items-center text-center h-screen gap-2'
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5, delay: 1 }}
     >
-      Your set are empty, maybe create some cards first :)
-      <Link to={`/card-set/${id}`} className='text-indig-400 underline'>Go to set</Link>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="mb-3 size-10 text-stone-400">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
+      </svg>
+      <h2>No cards here yet :(</h2>
+      <p>Try creating some to get started!</p>
+      <Link to={`/card-set/${id}`} className='mt-7 md:text-base text-sm gap-2 md:px-5 px-4 py-2 rounded-full bg-stone-900/50 transition duration-300 ease-in-out hover:bg-stone-900/70'>
+        Create cards
+      </Link>
     </motion.div>
   }
 
   if (gameFinished) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="p-8 rounded-lg shadow-lg text-center max-w-md">
-          <h1 className="text-3xl font-bold mb-4">Game Finished!</h1>
-          <p className="text-xl mb-6">
-            Your score: <span className="font-bold text-green-600">{score}</span> out of {cards.length}
+      <motion.div
+        className='flex flex-col items-center justify-center h-screen md:p-0 p-4'
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={0.8} stroke="currentColor" className="size-14 text-stone-300">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z" />
+        </svg>
+        <div className="p-3 text-center">
+          <h2 className="mb-4">Well done :)</h2>
+          <p className="mb-6 text-stone-300">
+            {score === 0 ? 'Nice try!' : 'Great job!'} You scored <span className="text-indigo-400">{score}</span> out of {cards.length}
           </p>
-          <p className="text-lg mb-8">
-            Percentage: <span className="font-bold">{Math.round((score / cards.length) * 100)}%</span>
-          </p>
-          <button
-            onClick={resetGame}
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Play Again
-          </button>
+          <h1 className="mb-4">
+            {/* <span>{Math.round((score / cards.length) * 100)}%</span> */}
+            <CircularProgress percentage={percentage} />
+          </h1>
         </div>
-      </div>
+        <div className='flex items-center gap-3'>
+          <Link to={`/card-set/${id}`} className='md:text-base text-sm gap-2 md:px-5 px-4 py-2 rounded-full bg-stone-900/50 transition duration-300 ease-in-out hover:bg-stone-900/70'>
+            Back to set
+          </Link>
+          <Button onClick={resetGame} variant={'primary'} className='flex'>
+            Play Again
+          </Button>
+        </div>
+      </motion.div>
     )
   }
 
