@@ -23,7 +23,7 @@ const Play = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false)
-    }, 1000)
+    }, 1500)
 
     return () => clearTimeout(timer)
   }, [])
@@ -323,7 +323,7 @@ const Play = () => {
   return (
     <>
       {loading ?
-        <div className='h-screen flex justify-center items-end'>
+        <div className='h-screen flex justify-center items-center'>
           <Spinner mode='light' />
         </div>
         : (
@@ -347,14 +347,15 @@ const Play = () => {
               {/* <h2>{currentCardIndex + 1} of {cards.length}</h2> */}
               <h2>Score: <span className='text-indigo-400'>{score}</span></h2>
               {/* Game control buttons and shuffle toggle */}
-              <div className="flex flex-wrap justify-center gap-3 border border-yellow-500">
+              <div className="flex justify-center gap-3">
                 <button
                   onClick={resetGame}
-                  className="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
+                  className="border-t border-rose-400/20 bg-rose-700/30 flex items-center justify-center rounded-full size-12 hover:bg-rose-700/40 transition-all duration-300 ease-in-out cursor-pointer"
                 >
-                  Reset
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="size-5 text-stone-200">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                  </svg>
                 </button>
-
                 <div className="flex items-center">
                   <label htmlFor="shuffle-toggle" className="flex items-center cursor-pointer">
                     <div className="relative">
@@ -365,8 +366,12 @@ const Play = () => {
                         checked={isShuffled}
                         onChange={toggleShuffleMode}
                       />
-                      <div className="block bg-gray-300 w-14 h-8 rounded-full"></div>
-                      <div className={`absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition-transform ${isShuffled ? 'transform translate-x-6' : ''}`}></div>
+                      <div className={`block w-18 h-12 rounded-full border border-stone-800`}></div>
+                      <div className={`absolute flex items-center justify-center left-1.5 top-1/2 -translate-y-1/2 size-9 rounded-full transition-transform border-t ${isShuffled ? 'transform translate-x-6 bg-indigo-700/30 hover:bg-indigo-700/40 border-indigo-400/30' : 'bg-stone-900 border-stone-400/20'}`}>
+                        <svg className={`${isShuffled ? 'rotate-180' : ''} transition-all duration-500 ease-in-out size-6 text-stone-300`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M13.484 9.166 15 7h5m0 0-3-3m3 3-3 3M4 17h4l1.577-2.253M4 7h4l7 10h5m0 0-3 3m3-3-3-3" />
+                        </svg>
+                      </div>
                     </div>
                   </label>
                 </div>
@@ -387,7 +392,7 @@ const Play = () => {
                     <p className="text-lg text-center leading-6 text-stone-200">{formatTextAsList(currentCard.question)}</p>
                   </div>
                   <div className="flex justify-center">
-                    <button onClick={handleFlip} className="group bg-indigo-700/30 flex items-center justify-center rounded-full size-12 hover:bg-indigo-700/40 transition-all duration-300 ease-in-out cursor-pointer">
+                    <button onClick={handleFlip} className="group bg-indigo-700/30 border-t border-indigo-400/20 flex items-center justify-center rounded-full size-12 hover:bg-indigo-700/40 transition-all duration-300 ease-in-out cursor-pointer">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="size-6 text-stone-300 group-hover:rotate-180 transition-all duration-300 ease-in-out">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
                       </svg>
@@ -407,13 +412,13 @@ const Play = () => {
                   </div>
                   <div className="flex justify-center gap-12">
                     {/* Correct */}
-                    <button onClick={() => handleAnswer(true)} className="bg-teal-700/30 flex items-center justify-center rounded-full size-12 hover:bg-teal-700/40 transition-all duration-300 ease-in-out cursor-pointer">
+                    <button onClick={() => handleAnswer(true)} className="bg-teal-700/30 border-t border-teal-400/20 flex items-center justify-center rounded-full size-12 hover:bg-teal-700/40 transition-all duration-300 ease-in-out cursor-pointer">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="size-6 text-teal-300">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                       </svg>
                     </button>
                     {/* Wrong */}
-                    <button onClick={() => handleAnswer(false)} className="bg-rose-700/30 flex items-center justify-center rounded-full size-12 hover:bg-rose-700/40 transition-all duration-300 ease-in-out cursor-pointer">
+                    <button onClick={() => handleAnswer(false)} className="bg-rose-700/30 border-t border-rose-400/20 flex items-center justify-center rounded-full size-12 hover:bg-rose-700/40 transition-all duration-300 ease-in-out cursor-pointer">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-rose-300">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                       </svg>
