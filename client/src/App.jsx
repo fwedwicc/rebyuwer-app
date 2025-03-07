@@ -9,7 +9,7 @@ const App = () => {
 
   return (
     <>
-      {location.pathname !== '/login' && location.pathname !== '/register' && <Nav />}
+      {location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '*' && <Nav />}
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
