@@ -89,6 +89,11 @@ body::-webkit-scrollbar-thumb {
   @apply px-4 py-2 md:text-base text-sm rounded-full bg-rose-400 text-black font-semibold cursor-pointer transition-all duration-300 ease-in-out;
 }
 
+/* SUCCESS: Confirm button */
+.swal-confirm-success {
+  @apply px-4 py-2 md:text-base text-sm rounded-full bg-emerald-400 text-black font-semibold cursor-pointer transition-all duration-300 ease-in-out;
+}
+
 /* Cancel button styling */
 .swal-cancel {
   @apply px-4 py-2 md:text-base text-sm rounded-full bg-transparent hover:bg-stone-900/60 text-stone-300 cursor-pointer;

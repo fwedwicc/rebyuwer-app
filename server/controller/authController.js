@@ -8,12 +8,32 @@ export const register = async (req, res) => {
 
     // Validate the input
     if (!username || !password || !confirmPassword) {
-      return res.status(400).json({ message: 'Please fill in all fields' })
+      return res.status(400).json({ message: 'All fields are required' })
     }
 
     // Check if passwords match
     if (password !== confirmPassword) {
       return res.status(400).json({ message: 'Passwords do not match' })
+    }
+
+    // Password length check
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'Use at least 8 characters' })
+    }
+
+    // Check for at least one uppercase letter
+    if (!/[A-Z]/.test(password)) {
+      return res.status(400).json({ message: 'Use at least 1 uppercase' })
+    }
+
+    // Check for at least one number
+    if (!/\d/.test(password)) {
+      return res.status(400).json({ message: 'Use at least 1 number' })
+    }
+
+    // Check for at least one special character
+    if (!/[\W_]/.test(password)) {
+      return res.status(400).json({ message: 'Use at least 1 special character' })
     }
 
     // Check if the user already exists
@@ -58,7 +78,7 @@ export const login = async (req, res) => {
     const { username, password } = req.body
 
     if (!username || !password) {
-      return res.status(400).json({ message: 'Please fill in all fields' })
+      return res.status(400).json({ message: 'All fields are required' })
     }
 
     // Check if the user exists
