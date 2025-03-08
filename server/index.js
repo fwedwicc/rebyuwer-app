@@ -1,4 +1,4 @@
-import express, { json } from 'express'
+import express from 'express'
 import { connect } from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
@@ -13,9 +13,14 @@ dotenv.config()
 const app = express()
 // const port = process.env.PORT
 
-app.use(cors())
-app.use(json())
-// app.use(express.json())
+app.use(cors({
+  origin: true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+app.use(express.json())
 
 // app.get('/', (req, res) => {
 //   res.send('Hello, World!')

@@ -96,7 +96,7 @@ export const login = async (req, res) => {
     await existingUser.save()
 
     // Generate token
-    const token = jwt.sign({ id: existingUser._id, userType: existingUser.userType }, process.env.JWT_SECRET, { expiresIn: '20s' })
+    const token = jwt.sign({ id: existingUser._id, userType: existingUser.userType }, process.env.JWT_SECRET, { expiresIn: '2h' })
 
     res.status(200).json({ message: 'Login successful', result: existingUser, token, userType: existingUser.userType })
   } catch (error) {
