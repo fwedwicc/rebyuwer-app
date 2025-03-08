@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import * as motion from "motion/react-client"
 import toast, { Toaster } from 'react-hot-toast'
 import Swal from 'sweetalert2'
 import { useNavigate, Navigate, Link } from 'react-router-dom'
 import { InputText, Button } from '../components/ui'
 import API from '../utils/api'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 const Register = () => {
   const [username, setUsername] = useState('')
@@ -28,7 +31,7 @@ const Register = () => {
     setRegisterLoading(true)
 
     try {
-      const response = await API.post('/auth/register', { username, password, confirmPassword })
+      const response = axios.post(`${API_URL}/auth/register`, { username, password, confirmPassword })
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('userType', response.data.userType)
 
