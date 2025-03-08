@@ -22,14 +22,14 @@ app.use(cors({
 
 app.use(express.json())
 
-// app.get('/', (req, res) => {
-//   res.send('Hello, World!')
-// })
-
-app.use((req, res, next) => {
-  console.log(req.path, req.method)
-  next()
+app.get('/', (req, res) => {
+  res.send('Hello, World!')
 })
+
+// app.use((req, res, next) => {
+//   console.log(req.path, req.method)
+//   next()
+// })
 
 app.use('/api/auth', authRoute)
 app.use('/api/user', userRoute)
