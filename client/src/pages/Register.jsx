@@ -31,7 +31,7 @@ const Register = () => {
     setRegisterLoading(true)
 
     try {
-      const response = axios.post(`${API_URL}/auth/register`, { username, password, confirmPassword })
+      const response = await axios.post(`${API_URL}/auth/register`, { username, password, confirmPassword })
       localStorage.setItem('token', response.data.token)
       localStorage.setItem('userType', response.data.userType)
 
