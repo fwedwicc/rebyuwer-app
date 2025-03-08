@@ -104,7 +104,6 @@ const Play = () => {
       icon: 'warning',
       showCancelButton: true,
       iconColor: "#fb7185",
-      showCancelButton: true,
       confirmButtonText: "Yes, reset it",
       cancelButtonText: "Cancel",
       customClass: {
