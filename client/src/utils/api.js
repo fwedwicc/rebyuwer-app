@@ -27,7 +27,7 @@ api.interceptors.response.use(response => {
     localStorage.removeItem('token')
     localStorage.removeItem('username')
     // Redirect to login page
-    window.location.href = '/login'
+    window.location.href = '/'
   } else {
     console.log("Error response: ", error.response)  // Log error details
   }
