@@ -23,7 +23,7 @@ const Register = () => {
     if (userType === 'admin') {
       return <Navigate to="/admin" />
     }
-    return <Navigate to="/" />
+    return <Navigate to="/home" />
   }
 
   const handleSubmit = async (e) => {
@@ -52,7 +52,7 @@ const Register = () => {
       if (response.data.userType === 'admin') {
         navigate('/admin')
       } else {
-        navigate('/')
+        navigate('/home')
       }
     } catch (err) {
       toast.error(err.response.data.message + ' :(', {
@@ -122,7 +122,7 @@ const Register = () => {
             </div>
             <Button type='submit' variant={'primary'} disabled={registerLoading} className='mt-4'>{registerLoading ? 'Setting up' : 'Register'}</Button>
             <p className='text-sm'>Already have an account?
-              <Link to='/login' className='text-center text-indigo-400 flex items-end gap-[1px]'>
+              <Link to='/' className='text-center text-indigo-400 flex items-end gap-[1px]'>
                 Login here
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3.5 mb-[2px]">
                   <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />

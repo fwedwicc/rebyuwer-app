@@ -9,11 +9,11 @@ const App = () => {
 
   return (
     <>
-      {location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '*' && <Nav />}
+      {location.pathname !== '/' && location.pathname !== '/register' && location.pathname !== '*' && <Nav />}
       <Routes>
+        <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Auth><Home /></Auth>} />
+        <Route path="/home" element={<Auth><Home /></Auth>} />
         <Route path="/settings" element={<Auth><Settings /></Auth>} />
         <Route path="/admin" element={<Auth><Admin /></Auth>} />
         <Route path="/card-set/:id" element={<Auth><Cards /></Auth>} />

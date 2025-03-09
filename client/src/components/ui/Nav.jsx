@@ -35,7 +35,7 @@ const Nav = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("token")
-        window.location.href = "/login"
+        window.location.href = "/"
       }
     })
   }
@@ -115,8 +115,8 @@ const Nav = () => {
       className='fixed z-50 mt-4 transform -translate-x-1/2 left-1/2 inline-flex items-center gap-1 border border-stone-900 bg-stone-900/30 backdrop-blur-md py-1 px-[5px] rounded-full'
     >
       {/* Home */}
-      <Link to='/' className={`relative overflow-hidden flex items-center justify-center p-[1px] rounded-full ${location.pathname === '/' && 'shadow-xl shadow-indigo-600/20'}`}>
-        {location.pathname === '/' && (
+      <Link to='/home' className={`relative overflow-hidden flex items-center justify-center p-[1px] rounded-full ${location.pathname === '/home' && 'shadow-xl shadow-indigo-600/20'}`}>
+        {location.pathname === '/home' && (
           <span
             className={`absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]`}
           />
