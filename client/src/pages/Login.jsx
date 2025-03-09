@@ -63,9 +63,10 @@ const Login = () => {
 
   // Check if the session has expired
   useEffect(() => {
-    const sessionExpired = localStorage.getItem("sessionExpired")
+    // const sessionExpired = localStorage.getItem("sessionExpired")
 
-    if (sessionExpired) {
+    if (localStorage.getItem('sessionExpired') === 'true') {
+      localStorage.removeItem("sessionExpired")
       Swal.fire({
         title: "Session expired :(",
         text: "Looks like you've been away for a while. Please sign in again to keep going!",
@@ -79,7 +80,6 @@ const Login = () => {
           confirmButton: "swal-confirm-confirm",
         },
       })
-      localStorage.removeItem("sessionExpired")
     }
   }, [])
 
